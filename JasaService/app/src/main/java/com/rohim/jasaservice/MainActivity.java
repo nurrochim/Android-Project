@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.rohim.fragment.AddTriggerJasaService;
 import com.rohim.fragment.BeforeLoginNotification;
 import com.rohim.fragment.FragmentBeforeLogin;
+import com.rohim.fragment.FragmentHistory;
 import com.rohim.fragment.FragmentInsertAccount;
 import com.rohim.fragment.FragmentMenuJasaService;
 import com.rohim.fragment.FragmentRequestOrderActive;
@@ -122,7 +123,8 @@ public class MainActivity extends AppCompatActivity
             popupNotificationShow("Belum Ada Active Task");
         }else if(id == R.id.nav_history){
             textTitle.setText("History");
-            popupNotificationShow("Belum Ada History");
+            //popupNotificationShow("Belum Ada History");
+            fragmentManager.beginTransaction().replace(R.id.content_main,new FragmentHistory()).commit();
         }else if(id == R.id.nav_active_order){
             textTitle.setText("Active Order");
             //popupNotificationShow("Belum Ada Active Order");

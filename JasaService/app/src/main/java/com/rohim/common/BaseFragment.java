@@ -2,6 +2,7 @@ package com.rohim.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,6 +45,7 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
 
     public DatabaseHelper dbh ;
     public SQLiteDatabase db;
+    public Cursor cursor;
     public SharedPreferences.Editor editorSharedPreference ;
     public CharSequence textToast = "";
     public Dao<Service, String> serviceDao = null;

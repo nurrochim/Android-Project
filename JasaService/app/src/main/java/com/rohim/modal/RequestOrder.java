@@ -22,6 +22,8 @@ public class RequestOrder {
     public static final String clm_start_time = "START_TIME";
     public static final String clm_finish_time = "FINISH_TIME";
     public static final String clm_create_date = "CREATE_DATE";
+    public static final String clm_finish_comment_user = "HASIL_SERVICE";
+    public static final String clm_hasil_service = "HASIL_SERVICE";
 
     @DatabaseField(id = true, columnName = clm_id_request)
     String idRequest;
@@ -43,6 +45,10 @@ public class RequestOrder {
     String finishTime;
     @DatabaseField(columnName = clm_create_date, dataType = DataType.DATE)
     Date createDate;
+    @DatabaseField(columnName = clm_finish_comment_user)
+    String finishCommentUser;
+    @DatabaseField(columnName = clm_hasil_service)
+    String hasilService;
 
     public RequestOrder() {
     }
@@ -125,5 +131,21 @@ public class RequestOrder {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getHasilService() {
+        return hasilService;
+    }
+
+    public void setHasilService(String hasilService) {
+        this.hasilService = hasilService;
+    }
+
+    public String getFinishCommentUser() {
+        return finishCommentUser;
+    }
+
+    public void setFinishCommentUser(String finishCommentUser) {
+        this.finishCommentUser = finishCommentUser;
     }
 }

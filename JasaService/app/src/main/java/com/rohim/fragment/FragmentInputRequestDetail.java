@@ -23,7 +23,9 @@ import com.rohim.modal.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Nurochim on 19/10/2016.
@@ -44,7 +46,6 @@ public class FragmentInputRequestDetail extends BaseFragment {
         btnSubmit = (Button) view.findViewById(R.id.btn_submit_input_request);
         btnBack = (Button) view.findViewById(R.id.btn_back_input_request);
         listview = (RecyclerView) view.findViewById(R.id.list_view_jasa_input_request);
-        spinner = (Spinner) view.findViewById(R.id.spinner_input_request);
         loadInit();
 
         // get Id User
@@ -62,18 +63,52 @@ public class FragmentInputRequestDetail extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if(idUser!=null && !idUser.isEmpty()){
-                    boolean isSucces = doSave();
-                    if(isSucces){
-                        createToast("Terimakasih... \n Request anda sedang dalam proses");
-                        getFragmentManager().popBackStack();
-                    }else{
-                        createToast("Maaf... Sepertinya ada masalah \n kami akan memperbaikinya segera");
-                        getFragmentManager().popBackStack();
+                    if(!seePreviousRequestInProcess()) {
+                        boolean isSucces = doSave();
+                        if (isSucces) {
+                            createToast("Terimakasih... \n Request anda sedang dalam proses");
+                            getFragmentManager().popBackStack();
+                        } else {
+                            createToast("Maaf... Sepertinya ada masalah \n kami akan memperbaikinya segera");
+                            getFragmentManager().popBackStack();
+                        }
                     }
-
                 }
             }
         });
+    }
+
+    private void loadInit() {
+        if(data.isEmpty()){
+            // load list view
+            try {
+                List<ServiceItem> listServiceItems = serviceItemDao.queryForEq(ServiceItem.clm_fid_service, idService);
+                dbh.close();
+                RequestDetail item = null;
+                for(ServiceItem serviceItem : listServiceItems){
+                    item = new RequestDetail(serviceItem);
+                    data.add(item);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listview.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, false);
+        listview.setAdapter(adapterListView);
+    }
+
+    public String getIdService() {
+        return idService;
+    }
+
+    public void setIdService(String idService) {
+        this.idService = idService;
     }
 
     private boolean doSave() {
@@ -114,36 +149,25 @@ public class FragmentInputRequestDetail extends BaseFragment {
         }
     }
 
-    private void loadInit() {
-        if(data.isEmpty()){
-            // load list view
-            try {
-                List<ServiceItem> listServiceItems = serviceItemDao.queryForEq(ServiceItem.clm_fid_service, idService);
-                dbh.close();
-                RequestDetail item = null;
-                for(ServiceItem serviceItem : listServiceItems){
-                    item = new RequestDetail(serviceItem);
-                    data.add(item);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+    private boolean seePreviousRequestInProcess(){
+        boolean isPreviousRequestStillProcess = false;
+        try {
+            openDatabaseHelper();
+            List<String> status = new ArrayList<>();
+            status.add("NEW");
+            status.add("ACCEPT");
+
+            List<RequestOrder> listOrder = requestOrderDao.queryBuilder().where().in(RequestOrder.clm_status,status).query();
+            dbh.close();
+
+            if(listOrder.size()>0){
+                isPreviousRequestStillProcess = true;
+                createToast("Maaf... Tidak dapat melanjutkan \n request anda sebelum ini masih dalam proses");
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listview.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager);
-        listview.setAdapter(adapterListView);
-    }
-
-    public String getIdService() {
-        return idService;
-    }
-
-    public void setIdService(String idService) {
-        this.idService = idService;
+        return isPreviousRequestStillProcess;
     }
 }

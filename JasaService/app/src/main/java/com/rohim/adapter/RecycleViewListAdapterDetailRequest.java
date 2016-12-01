@@ -38,11 +38,13 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
     FragmentManager fragmentManager;
     public Dao<DropDownList, Integer> dropDownListDao = null;
     public DatabaseHelper dbh ;
+    boolean enabled;
 
-    public RecycleViewListAdapterDetailRequest(Context context, List<RequestDetail> listData, FragmentManager fragmentManager) {
+    public RecycleViewListAdapterDetailRequest(Context context, List<RequestDetail> listData, FragmentManager fragmentManager, boolean enabled) {
         this.context = context;
         this.listData = listData;
         this.fragmentManager = fragmentManager;
+        this.enabled = enabled;
     }
     @Override
     public MyViewHolderItemRequest onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,6 +63,7 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
         if(requestDetail.getJenisInput().equals(EnumInputService.Map.getVal())){
             SharedPreferences prefs = context.getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
             holder.textItemValue.setText(prefs.getString("Address",""));
+            requestDetail.setServiceItemValue(prefs.getString("Address",""));
         }
         initDialogItem(requestDetail, holder.spinner);
     }
@@ -90,23 +93,24 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(requestDetail.getJenisInput().equals(EnumInputService.SpinnerInput.getVal())) {
-                        spinner.performClick();
+                    if(!enabled) {
+                        if (requestDetail.getJenisInput().equals(EnumInputService.SpinnerInput.getVal())) {
+                            spinner.performClick();
+                        } else if (requestDetail.getJenisInput().equals(EnumInputService.TextLong.getVal())
+                                || requestDetail.getJenisInput().equals(EnumInputService.TextAutomatic.getVal())) {
+                            popupInput = new PopupInput();
+                            popupInput.setParam(context, textItemValue, requestDetail);
+                            popupInput.show(fragmentManager, "");
+                        }
+                        if (requestDetail.getJenisInput().equals(EnumInputService.Map.getVal())) {
+                            FragmentMapLocationCapture mapLocationCapture = new FragmentMapLocationCapture();
+                            mapLocationCapture.setmLocationText(textItemValue);
+                            FragmentTransaction fragmentTrans = fragmentManager.beginTransaction();
+                            fragmentTrans.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+                            fragmentTrans.replace(R.id.content_main, mapLocationCapture);
+                            fragmentTrans.addToBackStack(null).commit();
+                        }
                     }
-                    else if(requestDetail.getJenisInput().equals(EnumInputService.TextLong.getVal())
-                            ||requestDetail.getJenisInput().equals(EnumInputService.TextAutomatic.getVal())) {
-                        popupInput = new PopupInput();
-                        popupInput.setParam(context, textItemValue, requestDetail);
-                        popupInput.show(fragmentManager,"");
-                    }if(requestDetail.getJenisInput().equals(EnumInputService.Map.getVal())){
-                        FragmentMapLocationCapture mapLocationCapture = new FragmentMapLocationCapture();
-                        mapLocationCapture.setmLocationText(textItemValue);
-                        FragmentTransaction fragmentTrans = fragmentManager.beginTransaction();
-                        fragmentTrans.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-                        fragmentTrans.replace(R.id.content_main, mapLocationCapture);
-                        fragmentTrans.addToBackStack(null).commit();
-                    }
-
                 }
             });
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

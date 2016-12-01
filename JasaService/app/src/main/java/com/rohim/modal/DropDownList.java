@@ -17,6 +17,7 @@ public class DropDownList extends BaseDaoEnabled implements Serializable {
     public static final String clm_id_dropwodn = "ID_DROPDOWN";
     public static final String clm_fid_service_item = "FID_SERVICE_ITEM";
     public static final String clm_description = "DESCRIPTION";
+    public static final String clm_alias = "ALIAS";
 
     @DatabaseField(generatedId = true, columnName = clm_id_dropwodn)
     Integer idDropDown;
@@ -24,6 +25,8 @@ public class DropDownList extends BaseDaoEnabled implements Serializable {
     int fidServiceItem;
     @DatabaseField(columnName = clm_description)
     String description = "";
+    @DatabaseField(columnName = clm_alias)
+    String alias = "";
 
     public DropDownList(){
 
@@ -55,5 +58,13 @@ public class DropDownList extends BaseDaoEnabled implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }
