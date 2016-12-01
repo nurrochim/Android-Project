@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/common_full_open_on_phone"
+            android:title="Login" />
+        <item
+            android:id="@+id/nav_jasa"
+            android:icon="@drawable/custom_setting_c"
+            android:title="Jasa Service" />
+        <item
+            android:id="@+id/nav_active_task"
+            android:icon="@drawable/active_task"
+            android:title="Active Task" />
+        <item
+            android:id="@+id/nav_cari_jasa"
+            android:icon="@drawable/search_icon_b"
+            android:title="Mencari Jasa Service" />
+        <item
+            android:id="@+id/nav_active_order"
+            android:icon="@drawable/active_task"
+            android:title="Active Order" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/history"
+            android:title="History" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/account"
+            android:title="Account" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout_a"
+            android:title="Logout" />
+    </group>
+
+    <!--<item android:title="">-->
+        <!--<menu>-->
+        <!--</menu>-->
+    <!--</item>-->
+</menu>

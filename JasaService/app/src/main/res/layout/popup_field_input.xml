@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_margin="3mm"
+    android:background="@drawable/shape_radius_all_no_border"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3mm">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/text_input_prompt" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=" : "
+            android:id="@+id/textDoubleDot" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_input_value"
+            style="@style/EditTextBorder"
+            />
+        <LinearLayout
+            android:id="@+id/layout_automatic_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/button_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="100px"
+                android:text="-"
+                android:textStyle="bold"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="150px"
+                android:id="@+id/text_input_number"
+                android:text="1"
+                style="@style/EditTextBorder"
+                android:gravity="center"
+                android:textSize="20sp"
+                />
+            <Button
+                android:id="@+id/button_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="100px"
+                android:text="+"
+                android:textStyle="bold"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:stretchColumns="0,1"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:background="@drawable/shape_grey_radius_bottom_no_border"
+        android:paddingTop="2dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_grey_radius_bottom_no_border"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:gravity="center"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/shape_radius_left_bottom_no_border">
+                <Button
+                    style="@style/Button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_radius_left_bottom_no_border"
+                    android:text="CANCEL"
+                    android:id="@+id/btnCancel" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:gravity="center"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/shape_radius_right_bottom_no_border">
+                <Button
+                    style="@style/Button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_radius_right_bottom_no_border"
+                    android:text="OK"
+                    android:id="@+id/btnDone"
+                    />
+            </LinearLayout>
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:textAllCaps="false"
+    >
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout2"
+            >
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="105dp"
+                android:layout_height="119dp"
+                android:src="@drawable/logo_jasa_service_b"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="30dp"
+                android:text="Jasa Service"
+                android:id="@+id/textView" />
+
+            <LinearLayout
+            android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="10dp">
+
+                <TableLayout android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <TableRow >
+                        <EditText
+                            android:layout_width="280dp"
+                            android:id="@+id/text_email"
+                            android:hint="EMAIL"
+                            android:layout_marginBottom="15dp"
+                            />
+                    </TableRow>
+                    <TableRow >
+
+                        <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="15dp"
+                            >
+                            <EditText android:id="@+id/text_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="PASSWORD"
+                                android:inputType="textPassword"
+                                android:paddingRight="35dp"
+                                />
+
+                            <ImageButton
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="top"
+                                android:background="@android:color/transparent"
+                                android:id="@+id/btnAdd"
+                                android:src="@drawable/help"
+                                android:scaleType="fitXY"
+                                android:layout_alignParentRight="true"
+                                />
+                        </RelativeLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView android:id="@+id/text_error_login"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/status_failed"
+                            />
+                    </TableRow>
+                </TableLayout>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingTop="15dp"
+                    >
+                    <Button android:text="LOG IN"
+                        android:layout_width="match_parent"
+                        style="@style/ButtonBig"
+                        android:layout_weight="0.7"
+                        android:id="@+id/login_button"
+                        android:textColor="@android:color/white"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+</RelativeLayout>

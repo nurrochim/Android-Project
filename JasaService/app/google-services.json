@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "921355653875",
+    "firebase_url": "https://jasaservice-d9835.firebaseio.com",
+    "project_id": "jasaservice-d9835",
+    "storage_bucket": "jasaservice-d9835.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921355653875:android:dc4e78d7b13b31ce",
+        "android_client_info": {
+          "package_name": "com.rohim.jasaservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921355653875-3nnahqpkk21r94p8tp3tdnqr0fcoe063.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa9iSGPBw-Mrd9yGJOa5beSV4AXqszJ7E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

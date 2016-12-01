@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10px"
+    >
+
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        >
+        <Button android:text="Back"
+            android:layout_width="match_parent"
+            android:layout_height="70px"
+            android:id="@+id/btn_back_request_order"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_radius_layout"
+            />
+
+
+        <Button android:text="Cancel"
+            android:layout_width="match_parent"
+            android:layout_height="70px"
+            android:id="@+id/btn_cancel_request_order"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_radius_layout"
+            />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_request_order"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:touchscreenBlocksFocus="true"
+        android:spinnerMode="dialog"
+        android:visibility="invisible"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_view_jasa_request_order"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/layout_profil_penyedia_jasa"
+        android:layout_alignParentStart="true"
+         />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_profil_penyedia_jasa"
+        android:background="@drawable/shape_radius_layout"
+        android:padding="10px"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="0.5"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/layout_image_profil">
+            <ImageView
+                android:id="@+id/image_profil_request_order"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                app:srcCompat="@drawable/account"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/layout_image_profil">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Tukang Service"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No.Tlp : 087823114324"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

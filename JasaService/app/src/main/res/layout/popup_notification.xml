@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_margin="3mm"
+    android:background="@drawable/shape_radius_all_no_border"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:paddingRight="5px"
+        android:paddingLeft="5px">
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Add your Title"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        />
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20px" />
+    <TextView
+        android:id="@+id/text_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add your notification"
+        android:textSize="20sp"
+        android:textAlignment="center"
+
+        />
+    </LinearLayout>
+
+</RelativeLayout>
