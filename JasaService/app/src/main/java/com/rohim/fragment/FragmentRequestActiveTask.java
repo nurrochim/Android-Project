@@ -1,6 +1,5 @@
 package com.rohim.fragment;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,14 +10,12 @@ import android.widget.TextView;
 
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
 import com.rohim.common.BaseFragment;
-import com.rohim.jasaservice.MainActivity;
 import com.rohim.jasaservice.R;
+import com.rohim.modal.RequestAccepted;
 import com.rohim.modal.RequestDetail;
 import com.rohim.modal.RequestOrder;
 import com.rohim.modal.Service;
-import com.rohim.modal.ServiceItem;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,36 +23,31 @@ import java.util.List;
  * Created by Nurochim on 07/10/2016.
  */
 
-public class FragmentRequestOrderActive extends BaseFragment {
+public class FragmentRequestActiveTask extends BaseFragment {
 
     private List<RequestDetail> data = new ArrayList<>();
     private RecyclerView listview;
     private RecycleViewListAdapterDetailRequest adapterListView;
-    Button btnBack, btnCancel;
+    Button btnCancel, btnAcceptFinish;
     TextView textTitle, textUserName, textNoTelp;
+    boolean isNew = false;
 
     @Override
     public void initView() {
-        view = inflater.inflate(R.layout.active_request_order, container, false);
-        listview = (RecyclerView) view.findViewById(R.id.list_view_jasa_request_order);
-        textTitle = (TextView) view.findViewById(R.id.text_title_request_order);
-        textUserName = (TextView) view.findViewById(R.id.text_user_name_request_order);
-        textNoTelp = (TextView) view.findViewById(R.id.text_no_telp_request_order);
+        view = inflater.inflate(R.layout.active_request_task, container, false);
+        listview = (RecyclerView) view.findViewById(R.id.list_view_jasa_request_task);
+        textTitle = (TextView) view.findViewById(R.id.text_title_request_task);
+        textUserName = (TextView) view.findViewById(R.id.text_user_name_request_task);
+        textNoTelp = (TextView) view.findViewById(R.id.text_no_telp_request_task);
         loadInit();
 
-
-        btnCancel = (Button) view.findViewById(R.id.btn_cancel_request_order);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db = dbh.getWritableDatabase();
-                String sql = "DELETE FROM "+RequestOrder.tbl_request_order;
-                db.execSQL(sql);
-                sql = "DELETE FROM "+RequestDetail.tbl_request_detail;
-                db.execSQL(sql);
-                db.close();
-            }
-        });
+        btnCancel = (Button) view.findViewById(R.id.btn_cancel_request_task);
+        btnAcceptFinish = (Button) view.findViewById(R.id.btn_accept_finish_request_task);
+        if(isNew){
+            btnAcceptFinish.setText("Accept");
+        }else{
+            btnAcceptFinish.setText("Finish");
+        }
     }
 
     private void loadInit() {
@@ -72,10 +64,11 @@ public class FragmentRequestOrderActive extends BaseFragment {
                         +",B."+RequestDetail.clm_jenis_input
                         +",B."+RequestDetail.clm_satuan
                         +",C."+Service.clm_service_name
-                        +",A."+RequestOrder.clm_user_name
-                        +",A."+RequestOrder.clm_user_no_telfon
-                        +" FROM "+ RequestOrder.tbl_request_order +" A LEFT JOIN "+ RequestDetail.tbl_request_detail+" B "
-                        +" ON A."+RequestOrder.clm_id_request+" = B."+RequestDetail.clm_fid_request
+                        +",A."+ RequestAccepted.clm_client_name
+                        +",A."+RequestAccepted.clm_client_no_telfon
+                        +",A."+RequestAccepted.clm_status
+                        +" FROM "+ RequestAccepted.tbl_request_accepted +" A LEFT JOIN "+ RequestDetail.tbl_request_detail+" B "
+                        +" ON A."+RequestAccepted.clm_id_request+" = B."+RequestDetail.clm_fid_request
                         +" LEFT JOIN "+ Service.tbl_service+" C ON A.FID_SERVICE = C.ID_SERVICE"
                         +" AND A."+RequestOrder.clm_status+" IN ('NEW', 'ACCEPT') ORDER BY B."+RequestDetail.clm_id_request_detail+" ASC";
                 // get db conection
@@ -94,6 +87,11 @@ public class FragmentRequestOrderActive extends BaseFragment {
                         textTitle.setText(cursor.getString(7));
                         textUserName.setText(cursor.getString(8));
                         textNoTelp.setText(cursor.getString(9));
+                        if(cursor.getString(10).equals("NEW")){
+                            isNew = true;
+                        }esle{
+                            isNew = false;
+                        }
                         data.add(rd);
                     } while (cursor.moveToNext());
                 }

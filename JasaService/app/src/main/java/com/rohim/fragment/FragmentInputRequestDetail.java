@@ -117,28 +117,29 @@ public class FragmentInputRequestDetail extends BaseFragment {
         try {
             openDatabaseHelper();
             List<User> listUser = userDao.queryForEq(User.clm_id_user, idUser);
-            User user = listUser.get(0);
+            if(listUser != null) {
+                User user = listUser.get(0);
 
-            // Save Request Order
-            String idRequestOrder = idUser+"/"+idService+"_"+System.currentTimeMillis();
-            RequestOrder ro = new RequestOrder();
-            ro.setIdRequest(idRequestOrder);
-            ro.setFidUserCreate(idUser);
-            ro.setStatus("NEW");
-            ro.setFidService(idService);
-            ro.setUserName(user.getUserName());
-            ro.setUserNoTelfon(user.getNoTelp());
-            ro.setCreateDate(new Date());
-            requestOrderDao.create(ro);
+                // Save Request Order
+                String idRequestOrder = idUser + "/" + idService + "_" + System.currentTimeMillis();
+                RequestOrder ro = new RequestOrder();
+                ro.setIdRequest(idRequestOrder);
+                //ro.setFidUserCreate(idUser);
+                ro.setStatus("NEW");
+                ro.setFidService(idService);
+                //ro.setUserName(user.getUserName());
+                //ro.setUserNoTelfon(user.getNoTelp());
+                ro.setCreateDate(new Date());
+                requestOrderDao.create(ro);
 
-            // Save Request Detail
-            for(RequestDetail rqDet : data){
-                rqDet.setIdRequestDetail(idRequestOrder+"/Detail_"+dataDetail);
-                rqDet.setFidRequest(idRequestOrder);
-                requestDetailDao.create(rqDet);
-                dataDetail++;
+                // Save Request Detail
+                for (RequestDetail rqDet : data) {
+                    rqDet.setIdRequestDetail(idRequestOrder + "/Detail_" + dataDetail);
+                    rqDet.setFidRequest(idRequestOrder);
+                    requestDetailDao.create(rqDet);
+                    dataDetail++;
+                }
             }
-
             // Close DB Conection
             dbh.close();
 
@@ -146,6 +147,8 @@ public class FragmentInputRequestDetail extends BaseFragment {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            dbh.close();
         }
     }
 

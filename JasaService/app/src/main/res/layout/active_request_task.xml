@@ -18,7 +18,7 @@
         android:layout_marginBottom="5px"
         android:layout_marginTop="5px">
         <TextView
-            android:id="@+id/text_title_request_order"
+            android:id="@+id/text_title_request_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Service"
@@ -38,26 +38,26 @@
         android:weightSum="1"
         android:layout_alignParentBottom="true"
         >
-        <Button android:text="Back"
+        <Button android:text="Cancel"
             android:layout_width="match_parent"
             android:layout_height="70px"
-            android:id="@+id/btn_back_request_order"
+            android:id="@+id/btn_cancel_request_task"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"
             />
 
 
-        <Button android:text="Cancel"
+        <Button android:text="Accept"
             android:layout_width="match_parent"
             android:layout_height="70px"
-            android:id="@+id/btn_cancel_request_order"
+            android:id="@+id/btn_accept_finish_request_task"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"
             />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_view_jasa_request_order"
+        android:id="@+id/list_view_jasa_request_task"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
@@ -82,7 +82,7 @@
             android:layout_alignParentLeft="true"
             android:id="@+id/layout_image_profil">
             <ImageView
-                android:id="@+id/image_profil_request_order"
+                android:id="@+id/image_profil_request_task"
                 android:layout_width="100px"
                 android:layout_height="100px"
                 app:srcCompat="@drawable/account"
@@ -98,7 +98,7 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/layout_image_profil">
             <TextView
-                android:id="@+id/text_user_name_request_order"
+                android:id="@+id/text_user_name_request_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nama Tukang Service"
@@ -108,7 +108,7 @@
                 />
 
             <TextView
-                android:id="@+id/text_no_telp_request_order"
+                android:id="@+id/text_no_telp_request_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No.Tlp : 087823114324"

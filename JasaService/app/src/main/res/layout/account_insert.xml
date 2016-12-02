@@ -14,14 +14,14 @@
             android:id="@+id/text_insert_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="User Name"
+            android:hint="Nama"
             android:fontFamily="sans-serif"/>
         <EditText
             android:id="@+id/text_insert_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Phone Number"
+            android:hint="No Telepon"
             android:fontFamily="sans-serif"/>
         <EditText
             android:id="@+id/text_insert_email"
@@ -30,12 +30,12 @@
             android:hint="Email"
             android:fontFamily="sans-serif"/>
         <EditText
-            android:id="@+id/text_insert_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Password"
-            android:fontFamily="sans-serif"/>
+        android:id="@+id/text_insert_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:fontFamily="sans-serif"/>
         <EditText
             android:id="@+id/text_insert_confirm_password"
             android:layout_width="match_parent"

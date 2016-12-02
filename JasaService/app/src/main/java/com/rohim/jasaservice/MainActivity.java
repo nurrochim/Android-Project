@@ -20,6 +20,7 @@ import com.rohim.fragment.FragmentBeforeLogin;
 import com.rohim.fragment.FragmentHistory;
 import com.rohim.fragment.FragmentInsertAccount;
 import com.rohim.fragment.FragmentMenuJasaService;
+import com.rohim.fragment.FragmentRequestActiveTask;
 import com.rohim.fragment.FragmentRequestOrderActive;
 
 import java.util.ArrayList;
@@ -120,7 +121,8 @@ public class MainActivity extends AppCompatActivity
 
         }else if(id == R.id.nav_active_task){
             textTitle.setText("Active Task");
-            popupNotificationShow("Belum Ada Active Task");
+            //popupNotificationShow("Belum Ada Active Task");
+            fragmentManager.beginTransaction().replace(R.id.content_main,new FragmentRequestActiveTask()).commit();
         }else if(id == R.id.nav_history){
             textTitle.setText("History");
             //popupNotificationShow("Belum Ada History");
