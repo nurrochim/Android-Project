@@ -105,6 +105,7 @@
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold"
+                android:gravity="center"
                 />
 
             <TextView

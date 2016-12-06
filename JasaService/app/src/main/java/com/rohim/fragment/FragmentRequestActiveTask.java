@@ -89,7 +89,7 @@ public class FragmentRequestActiveTask extends BaseFragment {
                         textNoTelp.setText(cursor.getString(9));
                         if(cursor.getString(10).equals("NEW")){
                             isNew = true;
-                        }esle{
+                        }else{
                             isNew = false;
                         }
                         data.add(rd);

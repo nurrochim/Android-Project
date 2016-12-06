@@ -22,7 +22,7 @@ public class RequestOrder {
     public static final String clm_start_time = "START_TIME";
     public static final String clm_finish_time = "FINISH_TIME";
     public static final String clm_create_date = "CREATE_DATE";
-    public static final String clm_finish_comment_user = "HASIL_SERVICE";
+    public static final String clm_finish_comment_user = "FINISH_COMMENT_USER";
     public static final String clm_hasil_service = "HASIL_SERVICE";
 
     @DatabaseField(id = true, columnName = clm_id_request)

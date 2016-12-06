@@ -42,7 +42,8 @@ public class FragmentRequestOrderActive extends BaseFragment {
         textUserName = (TextView) view.findViewById(R.id.text_user_name_request_order);
         textNoTelp = (TextView) view.findViewById(R.id.text_no_telp_request_order);
         loadInit();
-
+        textUserName.setText("Ahmad Sobirin \nProfesional "+textTitle.getText().toString());
+        textNoTelp.setText("No. Telp : 0856752318998");
 
         btnCancel = (Button) view.findViewById(R.id.btn_cancel_request_order);
         btnCancel.setOnClickListener(new View.OnClickListener() {

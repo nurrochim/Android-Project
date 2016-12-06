@@ -28,11 +28,20 @@
         android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
         android:gravity="center"
         android:paddingTop="15px"
-        android:layout_alignParentTop="true"
         >
+        <ImageView
+            android:id="@+id/image_menu"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            app:srcCompat="@drawable/menu"
+            android:layout_marginLeft="5px"
+            android:alpha="0.6"
+            />
+        <View style="@style/DividerVertical" android:layout_marginLeft="5px"/>
         <TextView
             android:id="@+id/text_title"
             android:layout_width="match_parent"
@@ -41,15 +50,17 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:textAlignment="center"
+
             />
-        <View style="@style/Divider"/>
 
     </LinearLayout>
-
+    <View android:id="@+id/divider"
+        style="@style/Divider"
+        android:layout_margin="3px" android:layout_below="@id/layout_title"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_title"
+        android:layout_below="@id/divider"
         android:background="@drawable/shape_radius_layout"
         android:layout_marginLeft="5px"
         android:layout_marginRight="5px"

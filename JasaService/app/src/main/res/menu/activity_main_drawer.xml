@@ -7,6 +7,10 @@
             android:icon="@drawable/common_full_open_on_phone"
             android:title="Login" />
         <item
+            android:id="@+id/nav_menu_utama"
+            android:icon="@drawable/menu_utama"
+            android:title="Menu Utama" />
+        <item
             android:id="@+id/nav_jasa"
             android:icon="@drawable/custom_setting_c"
             android:title="Jasa Service" />
@@ -34,6 +38,7 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout_a"
             android:title="Logout" />
+
     </group>
 
     <!--<item android:title="">-->

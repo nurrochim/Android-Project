@@ -12,6 +12,7 @@
         android:id="@+id/layout_profil_account_update"
         android:background="@drawable/shape_radius_layout"
         android:padding="10px"
+        android:layout_margin="3px"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         >
@@ -19,13 +20,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="0.5"
             android:layout_alignParentLeft="true"
-            android:id="@+id/layout_image_profil">
+            android:id="@+id/layout_image_profil"
+            android:background="@drawable/shape_radius_layout"
+            android:gravity="center"
+            >
             <ImageView
                 android:id="@+id/image_profil_request_order"
                 android:layout_width="100px"
-                android:layout_height="100px"
+                android:layout_height="128dp"
                 app:srcCompat="@drawable/account"
                 />
         </LinearLayout>
@@ -48,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nama"
-                        android:textSize="12sp"
+                        android:fontFamily="sans-serif"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -60,17 +63,21 @@
                         />
                     <EditText
                         android:id="@+id/txt_user_account_update"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
                         />
                 </TableRow>
-                <TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No Telpon"
-                        android:textSize="12sp"
+                        android:fontFamily="sans-serif"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -82,18 +89,20 @@
                         />
                     <EditText
                         android:id="@+id/txt_no_telpon_account_update"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
                         android:inputType="number"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
                         />
                 </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email"
-                        android:textSize="12sp"
+                        android:fontFamily="sans-serif"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -105,9 +114,11 @@
                         />
                     <EditText
                         android:id="@+id/txt_email_account_update"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="17sp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
                         />
                 </TableRow>
             </TableLayout>
@@ -122,15 +133,13 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="70px"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.6"
                     />
-
-
                 <Button android:text="Save"
                     android:layout_width="match_parent"
                     android:layout_height="70px"
                     android:id="@+id/btn_save_account_update"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.4"
                     android:background="@drawable/shape_radius_layout"
                     />
             </LinearLayout>
@@ -144,7 +153,18 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/layout_profil_account_update"
-        android:layout_marginLeft="10px">
+        android:layout_margin="3px"
+        android:background="@drawable/shape_radius_layout"
+        android:padding="8px">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Change Password"
+            android:textSize="18sp"
+            android:paddingLeft="10px"
+            android:gravity="center"/>
 
         <EditText
             android:id="@+id/text_current_password_acccount_insert"
@@ -172,7 +192,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:layout_margin="3px">
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="70px"

@@ -1,5 +1,6 @@
 package com.rohim.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import com.j256.ormlite.dao.Dao;
 import com.rohim.adapter.NothingSelectedSpinnerAdapter;
 import com.rohim.adapter.RecycleViewListAdapter;
 import com.rohim.common.BaseFragment;
+import com.rohim.common.DatabaseHelper;
 import com.rohim.common.PopupNotification;
 import com.rohim.jasaservice.R;
 import com.rohim.modal.DropDownList;
@@ -48,6 +50,10 @@ public class AddTriggerJasaService extends BaseFragment{
     Boolean addJasaFromSpinner = true;
     public PopupNotification popupNotification;
     public FragmentManager fragmentManager;
+    private static DatabaseHelper dbhStatic ;
+    private static Activity activity;
+
+    String idUser;
 
     @Override
     public void initView() {
@@ -56,39 +62,44 @@ public class AddTriggerJasaService extends BaseFragment{
         btnSave = (Button) view.findViewById(R.id.btn_save_tambah_jasa_service);
         contexts = getContext();
         fragmentManager= getFragmentManager();
-        popupNotification = new PopupNotification();
-        popupNotification.setParam(getContext(), "Save", "Buatlah Account, untuk bisa menggunakan fitur dengan baik");
+        activity = getActivity();
+
+        idUser = sharedPreference.getString("IdUser","");
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //popupNotification.show(fragmentManager, "");
-                AddJasaServiceData();
+                if(idUser.isEmpty()) {
+                    popupNotification.show(fragmentManager, "");
+                } else {
+                  // doSave
+                }
             }
         });
         btnTambahJasa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadAdapterSpinner();
-//                spinnerJasaService.performClick();
-                writeDBToSDCard();
+                //loadAdapterSpinner();
+                spinnerJasaService.performClick();
+//                writeDBToSDCard();
             }
         });
 
         loadInit();
+        refreshAdapter();
     }
 
     public void loadInit(){
+        // load data from db
+        final List<Service> listService = getDataService();
+
         // load jasa service
         List<String> jasaService = new ArrayList<>();
-        jasaService.add("Service AC");
-        jasaService.add("Service Komputer");
-        jasaService.add("Service Mesin Mobil");
-        jasaService.add("Service Mesin Motor");
-        jasaService.add("Service Ban Mobil");
-        jasaService.add("Service Ban Motor");
+        for(Service service : listService) {
+            jasaService.add(service.getServiceName());
+        }
 
         spinnerJasaService = (Spinner) view.findViewById(R.id.spinner_jasa_service);
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 view.getContext(), android.R.layout.simple_spinner_item, jasaService);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinnerJasaService.setAdapter(new NothingSelectedSpinnerAdapter(adapter,R.layout.spinner_not_selected,getContext()));
@@ -112,8 +123,20 @@ public class AddTriggerJasaService extends BaseFragment{
                     if(addJasaFromSpinner) {
                         ServiceProvide item = new ServiceProvide();
                         item.setServiceName(selectedJasa);
-                        data.add(item);
-                        refreshAdapter();
+                        item.setFidService(listService.get(position).getIdService());
+                        item.setIdServiceProvide(idUser+"/"+item.getFidService()+"/"+selectedJasa);
+
+                        // save data
+                        openDatabaseHelper();
+                        try {
+                            serviceProvideDao.create(item);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }finally {
+                            dbh.close();
+                            refreshAdapter();
+                        }
+
                     }
                 }
             }
@@ -122,7 +145,7 @@ public class AddTriggerJasaService extends BaseFragment{
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });*/
+        });
 
         // load list view
         listview = (ListView) view.findViewById(R.id.list_view_jasa);
@@ -139,48 +162,71 @@ public class AddTriggerJasaService extends BaseFragment{
     }
 
     public static void refreshAdapter(){
-        adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService);
-        listview.setAdapter(adapterListView);
+        try {
+            dbhStatic = new DatabaseHelper(activity);
+            Dao<ServiceProvide, String>  staticServiceProvideDao = dbhStatic.getServiceProvideDao();
+            data = staticServiceProvideDao.queryForAll();
+            adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService);
+            listview.setAdapter(adapterListView);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbhStatic.close();
+        }
     }
 
-    private void AddJasaServiceData(){
+
+    private List<Service> getDataService() {
         List<Service> listService = new ArrayList<>();
         try {
-//            db.execSQL("DROP TABLE IF EXISTS "+Service.tbl_service);
-            db.execSQL("DROP TABLE IF EXISTS "+ ServiceItem.tbl_service_item);
-            db.execSQL("DROP TABLE IF EXISTS "+ DropDownList.tbl_dropDown_list);
-//            db.execSQL("DROP TABLE IF EXISTS "+ User.tbl_user);
-//            db.execSQL("DROP TABLE IF EXISTS "+ ServiceProvide.tbl_service_provice);
-
-            //db.execSQL("DELETE "+Service.tbl_service);
-            //db.execSQL("DELETE FROM "+ ServiceItem.tbl_service_item);
-            //db.execSQL("DELETE "+ DropDownList.tbl_dropDown_list);
-            //db.close();
-            //if(!serviceDao.isTableExists()){
-                dbh.onCreate(db);
-            //    dbh.close();
-            //}
-//            listService = serviceDao.queryForAll();
-//            serviceDao.delete(listService);
-
-            // add sample data
-//            dbh.AddDataService();
-            dbh.AddDataServiceItem();
-            dbh.addDataDropdown();
-
-            //listService = serviceDao.queryForAll();
-            CharSequence text = "Yey... berhasil add data";
-            Toast.makeText(getContext(),text, Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
+            openDatabaseHelper();
+            listService = serviceDao.queryForAll();
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            dbh.close();
         }
+        return listService;
+    }
+//
+//    private void AddJasaServiceData(){
+//        List<Service> listService = new ArrayList<>();
+//        try {
+////            db.execSQL("DROP TABLE IF EXISTS "+Service.tbl_service);
+//            db.execSQL("DROP TABLE IF EXISTS "+ ServiceItem.tbl_service_item);
+//            db.execSQL("DROP TABLE IF EXISTS "+ DropDownList.tbl_dropDown_list);
+////            db.execSQL("DROP TABLE IF EXISTS "+ User.tbl_user);
+////            db.execSQL("DROP TABLE IF EXISTS "+ ServiceProvide.tbl_service_provice);
+//
+//            //db.execSQL("DELETE "+Service.tbl_service);
+//            //db.execSQL("DELETE FROM "+ ServiceItem.tbl_service_item);
+//            //db.execSQL("DELETE "+ DropDownList.tbl_dropDown_list);
+//            //db.close();
+//            //if(!serviceDao.isTableExists()){
+//                dbh.onCreate(db);
+//            //    dbh.close();
+//            //}
+////            listService = serviceDao.queryForAll();
+////            serviceDao.delete(listService);
+//
+//            // add sample data
+////            dbh.AddDataService();
+//            dbh.AddDataServiceItem();
+//            dbh.addDataDropdown();
+//
+//            //listService = serviceDao.queryForAll();
+//            CharSequence text = "Yey... berhasil add data";
+//            Toast.makeText(getContext(),text, Toast.LENGTH_SHORT).show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
 //        for (Service services:listService) {
 //            jasaService.add(services.getServiceName());
 //        }
 
 
-    }
+
 
     List<String> jasaService = new ArrayList<>();
     public void loadAdapterSpinner(){

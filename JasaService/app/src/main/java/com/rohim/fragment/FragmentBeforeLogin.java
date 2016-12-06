@@ -2,6 +2,7 @@ package com.rohim.fragment;
 
 import android.opengl.Visibility;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,7 @@ public class FragmentBeforeLogin extends BaseFragment {
 
         btnPencariJasa = (Button) view.findViewById(R.id.btn_pencari_jasa);
         btnPenyediaJasa = (Button) view.findViewById(R.id.btn_penyedia_jasa);
-
+        rebuildMenuBeforeLogin();
         btnPencariJasa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,9 +46,19 @@ public class FragmentBeforeLogin extends BaseFragment {
     }
 
     public void rebuildMenuView(Boolean isPenyediaJasa){
-        MainActivity.navigationView.getMenu().getItem(1).setVisible(isPenyediaJasa);
         MainActivity.navigationView.getMenu().getItem(2).setVisible(isPenyediaJasa);
-        MainActivity.navigationView.getMenu().getItem(3).setVisible(!isPenyediaJasa);
+        MainActivity.navigationView.getMenu().getItem(3).setVisible(isPenyediaJasa);
         MainActivity.navigationView.getMenu().getItem(4).setVisible(!isPenyediaJasa);
+        MainActivity.navigationView.getMenu().getItem(5).setVisible(!isPenyediaJasa);
+//        MainActivity.drawer.openDrawer(Gravity.LEFT);
+    }
+
+    public void rebuildMenuBeforeLogin(){
+        MainActivity.navigationView.getMenu().getItem(2).setVisible(false);
+        MainActivity.navigationView.getMenu().getItem(3).setVisible(false);
+        MainActivity.navigationView.getMenu().getItem(4).setVisible(false);
+        MainActivity.navigationView.getMenu().getItem(5).setVisible(false);
+        MainActivity.navigationView.getMenu().getItem(6).setVisible(false);
+
     }
 }

@@ -27,15 +27,46 @@
     <Space
         android:layout_width="wrap_content"
         android:layout_height="20px" />
-    <TextView
-        android:id="@+id/text_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add your notification"
-        android:textSize="20sp"
-        android:textAlignment="center"
 
-        />
+        <TextView
+            android:id="@+id/text_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add your notification"
+            android:textSize="20sp"
+            android:textAlignment="center"
+
+            />
+        <LinearLayout
+            android:id="@+id/layout_button_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="15px"
+            android:layout_marginBottom="5px"
+            >
+            <!--<Space-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="70px"-->
+                <!--android:layout_weight="0.5"-->
+                <!--/>-->
+            <Button android:text="Cancel"
+                android:layout_width="match_parent"
+                android:layout_height="70px"
+                android:id="@+id/btn_back_popup"
+                android:layout_weight="0.5"
+                android:background="@drawable/shape_radius_layout"
+                />
+            <Button android:text="Logout"
+                android:layout_width="match_parent"
+                android:layout_height="70px"
+                android:id="@+id/btn_logout_popup"
+                android:layout_weight="0.5"
+                android:background="@drawable/shape_radius_layout"
+                />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

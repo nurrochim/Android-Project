@@ -32,7 +32,7 @@ import java.util.List;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "JS.db";
-    private static final int    DATABASE_VERSION = 3;
+    private static final int    DATABASE_VERSION = 4;
     private Dao<Service, String> serviceDao = null;
     private Dao<ServiceItem, Integer> serviceItemDao = null;
     private Dao<DropDownList, Integer> dropdownListDao = null;
@@ -62,16 +62,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-//            TableUtils.createTable(connectionSource, Service.class);
+            TableUtils.createTable(connectionSource, Service.class);
             TableUtils.createTable(connectionSource, ServiceItem.class);
             TableUtils.createTable(connectionSource, DropDownList.class);
-//            TableUtils.createTable(connectionSource, RequestDetail.class);
-//            TableUtils.createTable(connectionSource, RequestOrder.class);
-//            TableUtils.createTable(connectionSource, RequestAccepted.class);
-//            TableUtils.createTable(connectionSource, HistoryRequest.class);
-//            TableUtils.createTable(connectionSource, ReasonList.class);
-//            TableUtils.createTable(connectionSource, ServiceProvide.class);
-//            TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, RequestDetail.class);
+            TableUtils.createTable(connectionSource, RequestOrder.class);
+            TableUtils.createTable(connectionSource, RequestAccepted.class);
+            TableUtils.createTable(connectionSource, HistoryRequest.class);
+            TableUtils.createTable(connectionSource, ReasonList.class);
+            TableUtils.createTable(connectionSource, ServiceProvide.class);
+            TableUtils.createTable(connectionSource, User.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

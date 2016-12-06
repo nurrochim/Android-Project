@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
+import com.rohim.jasaservice.MainActivity;
 import com.rohim.jasaservice.R;
 import com.rohim.modal.DropDownList;
 import com.rohim.modal.HistoryRequest;
@@ -47,6 +48,7 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
     public SQLiteDatabase db;
     public Cursor cursor;
     public SharedPreferences.Editor editorSharedPreference ;
+    public SharedPreferences sharedPreference ;
     public CharSequence textToast = "";
     public Dao<Service, String> serviceDao = null;
     public Dao<ServiceItem, Integer> serviceItemDao = null;
@@ -74,7 +76,7 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
 
 
         editorSharedPreference = getContext().getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE).edit();
-
+        sharedPreference = getContext().getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
         // load Service DB
         try {
             serviceDao = dbh.getServiceDao();
@@ -109,6 +111,9 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
         }
         fragmentTransaction.replace(R.id.content_main, fragment);
         fragmentTransaction.addToBackStack(null).commit();
+        if(Title!=null && !Title.isEmpty()){
+            MainActivity.textTitle.setText(Title);
+        }
     }
 
 

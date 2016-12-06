@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
 import com.rohim.common.BaseFragment;
+import com.rohim.jasaservice.MainActivity;
 import com.rohim.jasaservice.R;
 import com.rohim.modal.RequestAccepted;
 import com.rohim.modal.RequestDetail;
@@ -39,9 +40,9 @@ public class FragmentUpdateAccount extends BaseFragment {
     @Override
     public void initView() {
         view = inflater.inflate(R.layout.account_update, container, false);
-        textUserName = (EditText) view.findViewById(R.id.text_user_account_update);
-        textNoTelp = (EditText) view.findViewById(R.id.text_no_telpon_account_update);
-        textEmail = (EditText) view.findViewById(R.id.text_email_account_update);
+        textUserName = (EditText) view.findViewById(R.id.txt_user_account_update);
+        textNoTelp = (EditText) view.findViewById(R.id.txt_no_telpon_account_update);
+        textEmail = (EditText) view.findViewById(R.id.txt_email_account_update);
         textCurrentPassword = (EditText) view.findViewById(R.id.text_current_password_acccount_insert);
         textNewPassword = (EditText) view.findViewById(R.id.text_new_password_acccount_insert);
         textConfirmPassword = (EditText) view.findViewById(R.id.text_confirm_password_acccount_insert);
@@ -51,7 +52,7 @@ public class FragmentUpdateAccount extends BaseFragment {
         idUser = prefs.getString("IdUser","");
         loadInit();
 
-        btnSave = (Button) view.findViewById(R.id.btn_cancel_request_task);
+        btnSave = (Button) view.findViewById(R.id.btn_save_account_update);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,9 +78,10 @@ public class FragmentUpdateAccount extends BaseFragment {
                     // save
                     try {
                         openDatabaseHelper();
-
+                        userDao.update(user);
                         // refresh data di panel left menu
-
+                        MainActivity.textUserName.setText(user.getUserName());
+                        MainActivity.textEmail.setText(user.getEmail());
                         // Close DB Conection
                         dbh.close();
 
@@ -92,7 +94,7 @@ public class FragmentUpdateAccount extends BaseFragment {
 
             }
         });
-        btnUpdatePassword = (Button) view.findViewById(R.id.btn_accept_finish_request_task);
+        btnUpdatePassword = (Button) view.findViewById(R.id.btn_update_password_account_update);
         btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,9 +115,10 @@ public class FragmentUpdateAccount extends BaseFragment {
                     // save
                     try {
                         openDatabaseHelper();
-
+                        userDao.update(user);
                         // refresh data di panel left menu
-
+                        MainActivity.textUserName.setText(user.getUserName());
+                        MainActivity.textEmail.setText(user.getEmail());
                         // Close DB Conection
                         dbh.close();
 

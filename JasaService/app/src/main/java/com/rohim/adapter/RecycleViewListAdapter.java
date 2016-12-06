@@ -3,6 +3,7 @@ package com.rohim.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,15 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.rohim.common.DatabaseHelper;
 import com.rohim.fragment.AddTriggerJasaService;
+import com.rohim.fragment.FragmentBeforeLogin;
 import com.rohim.jasaservice.R;
+import com.rohim.modal.RequestAccepted;
+import com.rohim.modal.RequestDetail;
+import com.rohim.modal.RequestOrder;
 import com.rohim.modal.ServiceProvide;
+import com.rohim.modal.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +89,7 @@ public class RecycleViewListAdapter extends BaseAdapter{
                                 for (Iterator iterator = AddTriggerJasaService.data.iterator(); iterator.hasNext();) {
                                     ServiceProvide deleteRow = (ServiceProvide) iterator.next();
                                     if(deleteRow.getServiceName().equalsIgnoreCase(jasaData.getServiceName())){
-                                        iterator.remove();
+                                        doDelete(deleteRow.getIdServiceProvide());
                                         AddTriggerJasaService.refreshAdapter();
                                     }
                                 }
@@ -127,5 +134,18 @@ public class RecycleViewListAdapter extends BaseAdapter{
             }
         });
         return itemView;
+    }
+
+
+    private void doDelete(String id){
+        DatabaseHelper dbh = new DatabaseHelper(context);
+        SQLiteDatabase db = dbh.getWritableDatabase();
+        try {
+            db.execSQL("DELETE FROM "+ ServiceProvide.tbl_service_provice +" WHERE "+ServiceProvide.clm_id_service_provide+" = '"+id+"'");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            db.close();
+        }
     }
 }
