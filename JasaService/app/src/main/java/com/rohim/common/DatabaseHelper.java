@@ -40,7 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<RequestAccepted, String> requestAcceptedDao = null;
     private Dao<RequestDetail, String> requestDetailDao = null;
     private Dao<HistoryRequest, String> historyRequestDao = null;
-    private Dao<ReasonList, String> reasonDao = null;
+    private Dao<ReasonList, Integer> reasonDao = null;
     private Dao<ServiceProvide, String> serviceProvideDao = null;
     private Dao<User, String> userDao = null;
 
@@ -157,7 +157,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return historyRequestDao;
     }
 
-    public Dao<ReasonList, String> getReasonDao() throws SQLException {
+    public Dao<ReasonList, Integer> getReasonDao() throws SQLException {
         if (reasonDao == null) {
             reasonDao = getDao(ReasonList.class);
         }

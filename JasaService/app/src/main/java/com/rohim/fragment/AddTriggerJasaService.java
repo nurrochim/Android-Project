@@ -53,7 +53,7 @@ public class AddTriggerJasaService extends BaseFragment{
     private static DatabaseHelper dbhStatic ;
     private static Activity activity;
 
-    String idUser;
+    private static String idUser;
 
     @Override
     public void initView() {
@@ -149,14 +149,6 @@ public class AddTriggerJasaService extends BaseFragment{
 
         // load list view
         listview = (ListView) view.findViewById(R.id.list_view_jasa);
-//
-//        TambahJasa item = new TambahJasa();
-//        item.setServiceName("Service AC");
-//        TambahJasa item1 = new TambahJasa();
-//        item1.setServiceName("Service Ban Motor");
-//
-//        data.add(item);
-//        data.add(item1);
         adapterListView = new RecycleViewListAdapter(getContext(), data, spinnerJasaService);
         listview.setAdapter(adapterListView);
     }
@@ -165,7 +157,7 @@ public class AddTriggerJasaService extends BaseFragment{
         try {
             dbhStatic = new DatabaseHelper(activity);
             Dao<ServiceProvide, String>  staticServiceProvideDao = dbhStatic.getServiceProvideDao();
-            data = staticServiceProvideDao.queryForAll();
+            data = staticServiceProvideDao.queryBuilder().where().like(ServiceProvide.clm_id_service_provide,idUser+"%").query();
             adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService);
             listview.setAdapter(adapterListView);
         } catch (SQLException e) {
