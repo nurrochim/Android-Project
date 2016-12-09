@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10px">
+    android:padding="0.5mm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
 
         <Button android:text="Tambah Sevice"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="8mm"
             android:id="@+id/btn_tambah_jasa_service"
             android:layout_weight="0.5"
             android:background="@drawable/shape_button_v3"
@@ -70,7 +70,7 @@
 
         <Button android:text="Save"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="8mm"
             android:id="@+id/btn_save_tambah_jasa_service"
             android:layout_weight="0.5"
             android:background="@drawable/shape_button_v3"

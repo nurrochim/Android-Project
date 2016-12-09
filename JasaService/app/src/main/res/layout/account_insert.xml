@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:padding="5px">
+        android:padding="0.5mm">
 
         <EditText
             android:id="@+id/text_insert_user_name"
@@ -44,7 +44,7 @@
             android:hint="Confirm Password"
             android:fontFamily="sans-serif"/>
         <TextView
-            android:padding="10px"
+            android:padding="0.5mm"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Sebagai"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="50px"
+            android:layout_marginLeft="5mm"
             >
             <RadioGroup
                 android:layout_width="match_parent"
@@ -92,13 +92,13 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:layout_weight="0.5"
                 />
 
             <Button android:text="Submit"
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:id="@+id/btn_save_insert_account"
                 android:layout_weight="0.5"
                 android:background="@drawable/shape_button_v3"

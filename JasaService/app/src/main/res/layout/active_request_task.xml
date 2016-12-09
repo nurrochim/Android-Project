@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10px"
+    android:padding="1mm"
     >
 
     <LinearLayout
@@ -15,8 +15,8 @@
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:background="@color/md_white_1000"
-        android:layout_marginBottom="5px"
-        android:layout_marginTop="5px">
+        android:layout_marginBottom="0.2mm"
+        android:layout_marginTop="0.2mm">
         <TextView
             android:id="@+id/text_title_request_task"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         >
         <Button android:text="Cancel"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="7mm"
             android:id="@+id/btn_cancel_request_task"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"
@@ -48,7 +48,7 @@
 
         <Button android:text="Accept"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="7mm"
             android:id="@+id/btn_accept_finish_request_task"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/layout_profil_penyedia_jasa"
         android:background="@drawable/shape_radius_layout"
-        android:padding="10px"
+        android:padding="1mm"
         android:layout_below="@+id/layout_title_service"
         >
         <LinearLayout
@@ -82,8 +82,8 @@
             android:id="@+id/layout_image_profil">
             <ImageView
                 android:id="@+id/image_profil_request_task"
-                android:layout_width="100px"
-                android:layout_height="100px"
+                android:layout_width="10mm"
+                android:layout_height="10mm"
                 app:srcCompat="@drawable/account"
                 />
         </LinearLayout>

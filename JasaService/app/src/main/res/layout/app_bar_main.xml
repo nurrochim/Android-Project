@@ -31,17 +31,17 @@
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:paddingTop="15px"
+        android:paddingTop="1mm"
         >
         <ImageView
             android:id="@+id/image_menu"
-            android:layout_width="50px"
-            android:layout_height="50px"
+            android:layout_width="6mm"
+            android:layout_height="6mm"
             app:srcCompat="@drawable/menu"
-            android:layout_marginLeft="5px"
+            android:layout_marginLeft="1mm"
             android:alpha="0.6"
             />
-        <View style="@style/DividerVertical" android:layout_marginLeft="5px"/>
+        <View style="@style/DividerVertical" android:layout_marginLeft="1mm"/>
         <TextView
             android:id="@+id/text_title"
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:textAlignment="center"
-
+            android:paddingLeft="-2mm"
             />
 
     </LinearLayout>
@@ -62,10 +62,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/divider"
         android:background="@drawable/shape_radius_layout"
-        android:layout_marginLeft="5px"
-        android:layout_marginRight="5px"
-        android:layout_marginBottom="5px"
-        android:layout_marginTop="1px"
+        android:layout_marginLeft="0.5mm"
+        android:layout_marginRight="0.5mm"
+        android:layout_marginBottom="0.5mm"
+        android:layout_marginTop="0.2mm"
 
         >
         <include layout="@layout/content_main" />

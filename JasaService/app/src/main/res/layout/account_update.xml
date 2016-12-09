@@ -153,9 +153,9 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/layout_profil_account_update"
-        android:layout_margin="3px"
+        android:layout_margin="0.3mm"
         android:background="@drawable/shape_radius_layout"
-        android:padding="8px">
+        android:padding="0.8mm">
 
         <TextView
             android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:fontFamily="sans-serif"
             android:text="Change Password"
             android:textSize="18sp"
-            android:paddingLeft="10px"
+            android:paddingLeft="1mm"
             android:gravity="center"/>
 
         <EditText
@@ -193,15 +193,15 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_alignParentBottom="true"
-            android:layout_margin="3px">
+            android:layout_margin="0.3mm">
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:layout_weight="0.5"
                 />
             <Button android:text="Update Password"
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:id="@+id/btn_update_password_account_update"
                 android:layout_weight="0.5"
                 android:background="@drawable/shape_radius_layout"

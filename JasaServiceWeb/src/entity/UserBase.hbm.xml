@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.model">
+  <class name="UserBase" table="USR_USER">
+    <id name="idUser">
+      <column name="ID_USER"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="failCount">
+      <column name="FAIL_COUNT"/>
+    </property>
+    <property name="fullName">
+      <column name="FULL_NAME"/>
+    </property>
+    <property name="lastLoginFrom">
+      <column name="LAST_LOGIN_FROM"/>
+    </property>
+    <property name="lastLoginTime">
+      <column name="LAST_LOGIN_TIME"/>
+    </property>
+    <property name="logoutTime">
+      <column name="LOGOUT_TIME"/>
+    </property>
+    <property name="password">
+      <column name="PASSWORD"/>
+    </property>
+    <property name="passwordExpire">
+      <column name="PASSWORD_EXPIRE"/>
+    </property>
+    <property name="status" type="java.lang.Character">
+      <column name="STATUS">
+        <comment>I - Inactive A - Active</comment>
+      </column>
+    </property>
+    <property name="lastUpdateBy">
+      <column name="LAST_UPDATE_BY"/>
+    </property>
+    <property name="lastUpdateDate">
+      <column name="LAST_UPDATE_DATE"/>
+    </property>
+    
+  </class>
+</hibernate-mapping>

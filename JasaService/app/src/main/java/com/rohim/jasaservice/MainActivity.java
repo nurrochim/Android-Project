@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     public Dao<RequestAccepted, String> requestAcceptedDao = null;
     public Dao<RequestOrder, String> requestOrderDao = null;
     public Dao<HistoryRequest, String> historyRequestDao = null;
-    public Dao<ReasonList, String> reasonDao = null;
+    public Dao<ReasonList, Integer> reasonDao = null;
     public Dao<User, String> userDao = null;
     public DatabaseHelper dbh ;
     public SQLiteDatabase db;

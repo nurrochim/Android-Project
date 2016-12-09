@@ -37,16 +37,16 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="15px"
+            android:layout_marginTop="1.5mm"
             >
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:layout_weight="0.5"
                 />
             <Button android:text="Logout"
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="7mm"
                 android:id="@+id/btn_logout"
                 android:layout_weight="0.5"
                 android:background="@drawable/shape_radius_layout"

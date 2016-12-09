@@ -60,7 +60,8 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
     public Dao<HistoryRequest, String> historyRequestDao = null;
     public Dao<ReasonList, Integer> reasonDao = null;
     public Dao<User, String> userDao = null;
-
+    public static String keyIpAddress = "IpAddress";
+    public static String keyAddres = "Address";
 
     @Nullable
     @Override
@@ -147,5 +148,19 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
             e.printStackTrace();
         }
 
+    }
+
+    public void saveSharedPreference(String key, Object value){
+        if(value instanceof String){
+            editorSharedPreference.putString(key, value.toString());
+        }
+
+        editorSharedPreference.commit();
+    }
+
+    public Object getValueSharedPreference(String key){
+        Object object = new Object();
+        object = sharedPreference.getString(key,"");
+        return object;
     }
 }

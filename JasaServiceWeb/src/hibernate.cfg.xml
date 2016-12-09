@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.datasource">jdbc/JasaService</property>
+        <property name="hibernate.current_session_context_class">jta</property>
+		<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
+		<property name="jta.UserTransaction">java:/jboss/UserTransaction</property>
+		<property name="jta.UserTransactionLookup">java:/jboss/UserTransaction</property>
+		<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.default_schema">sa</property>
+		<property name="hibernate.show_sql">false</property>
+		<property name="format_sql">false</property>
+		<property name="use_sql_comments">false</property>
+		<mapping resource="com/model/UserBase.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

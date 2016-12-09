@@ -59,57 +59,62 @@ public class FragmentInsertAccount extends BaseFragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isValidateError = false;
-                // validasi input
-                if(textEmail.getText().toString().isEmpty() ||
-                        textUserName.getText().toString().isEmpty() ||
-                        textNoTelfon.getText().toString().isEmpty() ||
-                        textPassword.getText().toString().isEmpty() ||
-                        textConfirmPassword.getText().toString().isEmpty() ){
-                    isValidateError = true;
-                    createToast("Tolong isikan semua field yang ada");
-                }
-                // validasi email
-                if(!isValidateError){
-                    String email = textEmail.getText().toString();
-                    if(!email.contains("@") && !email.contains(".") ){
+                if(textUserName.getText().toString().equalsIgnoreCase("JSON")){
+                    openFragment(new FragmentSetting(), "Setting", false);
+                }else{
+
+                    isValidateError = false;
+                    // validasi input
+                    if(textEmail.getText().toString().isEmpty() ||
+                            textUserName.getText().toString().isEmpty() ||
+                            textNoTelfon.getText().toString().isEmpty() ||
+                            textPassword.getText().toString().isEmpty() ||
+                            textConfirmPassword.getText().toString().isEmpty() ){
                         isValidateError = true;
-                        createToast("Tolong isikan alamat email dengan benar");
+                        createToast("Tolong isikan semua field yang ada");
                     }
-                }
-
-                // validasi password
-                if(!isValidateError){
-                    if(!textPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
-                        isValidateError = true;
-                        createToast("Password tidak sama...");
+                    // validasi email
+                    if(!isValidateError){
+                        String email = textEmail.getText().toString();
+                        if(!email.contains("@") && !email.contains(".") ){
+                            isValidateError = true;
+                            createToast("Tolong isikan alamat email dengan benar");
+                        }
                     }
-                }
 
-                if(!isValidateError){
-                    User user = new User();
-                    user.setIdUser(idUser+System.currentTimeMillis());
-                    user.setEmail(textEmail.getText().toString());
-                    user.setUserName(textUserName.getText().toString());
-                    user.setNoTelp(textNoTelfon.getText().toString());
-                    user.setPassword(textPassword.getText().toString());
-                    user.setJenisUser(jenisUser);
+                    // validasi password
+                    if(!isValidateError){
+                        if(!textPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
+                            isValidateError = true;
+                            createToast("Password tidak sama...");
+                        }
+                    }
 
-                    // get token for Firebase notification
-                    String token = "";//FirebaseInstanceId.getInstance().getId();
-                    user.setToken(token);
-                    try {
-                        userDao.create(user);
-                        createToast("Terimakasih... Pendaftaran account berhasil");
-                        dbh.close();
+                    if(!isValidateError){
+                        User user = new User();
+                        user.setIdUser(idUser+System.currentTimeMillis());
+                        user.setEmail(textEmail.getText().toString());
+                        user.setUserName(textUserName.getText().toString());
+                        user.setNoTelp(textNoTelfon.getText().toString());
+                        user.setPassword(textPassword.getText().toString());
+                        user.setJenisUser(jenisUser);
 
-                        // login screen
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
-                        startActivityForResult(intent, 0);
-                        ActivityCompat.finishAffinity(getActivity());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        createToast("Ups...Maaf, pendaftaran gagal");
+                        // get token for Firebase notification
+                        String token = "";//FirebaseInstanceId.getInstance().getId();
+                        user.setToken(token);
+                        try {
+                            userDao.create(user);
+                            createToast("Terimakasih... Pendaftaran account berhasil");
+                            dbh.close();
+
+                            // login screen
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivityForResult(intent, 0);
+                            ActivityCompat.finishAffinity(getActivity());
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            createToast("Ups...Maaf, pendaftaran gagal");
+                        }
                     }
                 }
             }
