@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="User" table="TBL_USER">
+    <id name="idUser">
+      <column name="ID_USER"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="userName">
+      <column name="USER_NAME"/>
+    </property>
+    <property name="noTelp">
+      <column name="NO_TELFON"/>
+    </property>
+    <property name="email">
+      <column name="EMAIL"/>
+    </property>
+    <property name="password">
+      <column name="PASSWORD"/>
+    </property>
+    <property name="jenisUser">
+      <column name="JENIS_USER"/>
+    </property>
+    <property name="fotoProfil">
+      <column name="FOTO_PROFIL"/>
+    </property>
+    <property name="currentLongitude">
+      <column name="CURRENT_LONGITUDE"/>
+    </property>
+    <property name="currentLatitude">
+      <column name="CURRENT_LATITUDE"/>
+    </property>
+    <property name="status">
+      <column name="STATUS"/>
+    </property>
+    <property name="token">
+      <column name="TOKEN"/>
+    </property>
+  </class>
+</hibernate-mapping>

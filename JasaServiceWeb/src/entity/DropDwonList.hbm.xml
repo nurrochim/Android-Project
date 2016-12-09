@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="DropDownList" table="TBL_DROPDOWN_LIST">
+    <id name="idDropDown">
+      <column name="ID_DROPDOWN"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidServiceItem">
+      <column name="FID_SERVICE_ITEM"/>
+    </property>
+    <property name="description">
+      <column name="DESCRIPTION"/>
+    </property>
+    <property name="alias">
+      <column name="ALIAS"/>
+    </property>
+  </class>
+</hibernate-mapping>

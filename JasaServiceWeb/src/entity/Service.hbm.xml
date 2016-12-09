@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="Service" table="TBL_SERVICE">
+    <id name="idService">
+      <column name="ID_SERVICE"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="serviceName">
+      <column name="SERVICE_NAME"/>
+    </property>
+    <property name="icon">
+      <column name="SERVICE_ICON"/>
+    </property>
+    
+    
+  </class>
+</hibernate-mapping>

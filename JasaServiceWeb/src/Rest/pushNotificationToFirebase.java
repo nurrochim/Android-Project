@@ -14,8 +14,8 @@ import org.jboss.resteasy.client.ClientResponse;
 
 import com.google.gson.Gson;
 
-import entity.model.FirebaseBody;
-import entity.model.FirebaseNotification;
+import model.FirebaseBody;
+import model.FirebaseNotification;
 
 public class pushNotificationToFirebase {
 	public static void main(String[] args) {

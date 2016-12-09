@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="HistoryRequest" table="TBL_REQUEST_HISTORY">
+    <id name="idHistoryRequest">
+      <column name="ID_HISTORY"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidRequest">
+      <column name="FID_REQUEST"/>
+    </property>
+    <property name="fidReason">
+      <column name="FID_REASON"/>
+    </property>
+    <property name="status">
+      <column name="STATUS"/>
+    </property>
+    <property name="reason">
+      <column name="REASON"/>
+    </property>
+    <property name="createBy">
+      <column name="CREATE_BY"/>
+    </property>
+    <property name="createDate">
+      <column name="CREATE_DATE"/>
+    </property>
+  </class>
+</hibernate-mapping>

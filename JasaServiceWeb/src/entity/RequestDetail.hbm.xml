@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="RequestDetail" table="TBL_REQUEST_DETAIL">
+    <id name="idRequestDetail">
+      <column name="ID_REQUEST_DETAIL"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidRequest">
+      <column name="FID_REQUEST"/>
+    </property>
+    <property name="fidServiceItem">
+      <column name="FID_SERVICE_ITEM"/>
+    </property>
+    <property name="serviceItemName">
+      <column name="SERVICE_ITEM_NAME"/>
+    </property>
+    <property name="serviceItemValue">
+      <column name="SERVICE_ITEM_VALUE"/>
+    </property>
+    <property name="jenisInput">
+      <column name="JENIS_INPUT"/>
+    </property>
+    <property name="satuan">
+      <column name="SATUAN"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,4 +1,4 @@
-package entity.model;
+package model;
 
 public class FirebaseNotification {
 	String body;

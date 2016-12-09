@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="ServiceItem" table="TBL_SERVICE_ITEM">
+    <id name="idServiceItem">
+      <column name="ID_SERVICE_ITEM"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidService">
+      <column  name="FID_SERVICE"/>
+    </property>
+    <property name="itemName">
+      <column name="ITEM_NAME"/>
+    </property>
+    <property name="jenisInput">
+      <column name="JENIS_INPUT"/>
+    </property>
+    
+  </class>
+</hibernate-mapping>

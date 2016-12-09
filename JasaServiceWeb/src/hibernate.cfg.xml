@@ -11,10 +11,18 @@
 		<property name="jta.UserTransactionLookup">java:/jboss/UserTransaction</property>
 		<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-		<property name="hibernate.default_schema">sa</property>
+		<property name="hibernate.default_schema">dbo</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="format_sql">false</property>
-		<property name="use_sql_comments">false</property>
-		<mapping resource="com/model/UserBase.hbm.xml" />
+		<property name="use_sql_comments">true</property>
+		<mapping resource="entity/User.hbm.xml" />
+		<mapping resource="entity/DropDwonList.hbm.xml" />
+		<mapping resource="entity/HistoryRequest.hbm.xml" />
+		<mapping resource="entity/ReasonList.hbm.xml" />
+		<mapping resource="entity/Request.hbm.xml" />
+		<mapping resource="entity/RequestDetail.hbm.xml" />
+		<mapping resource="entity/Service.hbm.xml" />
+		<mapping resource="entity/ServiceItem.hbm.xml" />
+		<mapping resource="entity/ServiceProvide.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

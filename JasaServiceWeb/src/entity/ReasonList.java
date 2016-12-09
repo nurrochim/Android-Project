@@ -1,10 +1,12 @@
 package entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Asus on 28/11/2016.
  */
 
-public class ReasonList {
+public class ReasonList implements Serializable{
     public static final String tbl_reason_list = "TBL_REASON_LIST";
     public static final String clm_id_reason = "ID_REASON";
     public static final String clm_parameter = "PARAMETER";

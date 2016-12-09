@@ -53,4 +53,5 @@ Tuturial Workspace
 Android-GCM-Client-XMPP.zip
 Icon/Car repair - Free transport icons_files
 Icon/Car repair - Free transport icons.html
-/JasaServiceWeb/build/classes/entity/*.class
+/JasaServiceWeb/build
+/.metadata

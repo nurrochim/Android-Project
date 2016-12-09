@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="ServiceProvide" table="TBL_SERVICE_PROVIDE">
+    <id name="idServiceProvide">
+      <column name="ID_SERVICE_PROVIDE"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidService">
+      <column name="FID_SERVICE"/>
+    </property>
+    <property name="serviceName">
+      <column name="SERVICE_NAME"/>
+    </property>
+    <property name="status">
+      <column name="STATUS"/>
+    </property>
+    <property name="description">
+      <column name="DESCRIPTION"/>
+    </property>
+    <property name="pengalaman">
+      <column name="PENGALAMAN"/>
+    </property>
+    
+  </class>
+</hibernate-mapping>

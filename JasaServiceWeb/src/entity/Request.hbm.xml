@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="entity">
+  <class name="Request" table="TBL_REQUEST">
+    <id name="idRequest">
+      <column name="ID_REQUEST"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="fidService">
+      <column name="FID_SERVICE"/>
+    </property>
+    <property name="fidServiceProvide">
+      <column name="FID_SERVICE_PROVIDE"/>
+    </property>
+    <property name="fidUserCreate">
+      <column name="FID_USER_CREATE"/>
+    </property>
+    <property name="fidUserAccept">
+      <column name="FID_USER_ACCEPT"/>
+    </property>
+    <property name="status">
+      <column name="STATUS"/>
+    </property>
+    <property name="gpsImage">
+      <column name="GPS_IMAGE"/>
+    </property>
+    <property name="longitude">
+      <column name="LONGITUDE"/>
+    </property>
+    <property name="latitude">
+      <column name="LATITUDE"/>
+    </property>
+    <property name="addres">
+      <column name="ADDRES"/>
+    </property>
+    <property name="addresDescrition">
+      <column name="ADDRES_DESCRIPTION"/>
+    </property>
+    <property name="startTime">
+      <column name="START_TIME"/>
+    </property>
+    <property name="finishTime">
+      <column name="FINISH_TIME"/>
+    </property>
+    <property name="createDate">
+      <column name="CREATE_DATE"/>
+    </property>
+    <property name="finishCommentUser">
+      <column name="FINISH_COMMNET_USER"/>
+    </property>
+    <property name="hasilService">
+      <column name="HASIL_SERVICE"/>
+    </property>
+  </class>
+</hibernate-mapping>
