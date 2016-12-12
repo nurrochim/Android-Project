@@ -1,9 +1,11 @@
 package com.rohim.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.rohim.asyncTaskServer.deleteServiceProvideToServer;
 import com.rohim.common.DatabaseHelper;
 import com.rohim.fragment.AddTriggerJasaService;
 import com.rohim.fragment.FragmentBeforeLogin;
@@ -39,11 +42,15 @@ public class RecycleViewListAdapter extends BaseAdapter{
     List<ServiceProvide> listData = new ArrayList<>();
     Spinner spinner;
     public static String selectedJasa = "";
+    Activity activity;
+    String ipServer;
 
-    public RecycleViewListAdapter(Context context, List<ServiceProvide> listData, Spinner spinner) {
+    public RecycleViewListAdapter(Context context, List<ServiceProvide> listData, Spinner spinner, Activity activity, String ipServer) {
         this.context = context;
         this.listData = listData;
         this.spinner = spinner;
+        this.activity = activity;
+        this.ipServer = ipServer;
     }
 
     @Override
@@ -89,7 +96,7 @@ public class RecycleViewListAdapter extends BaseAdapter{
                                 for (Iterator iterator = AddTriggerJasaService.data.iterator(); iterator.hasNext();) {
                                     ServiceProvide deleteRow = (ServiceProvide) iterator.next();
                                     if(deleteRow.getServiceName().equalsIgnoreCase(jasaData.getServiceName())){
-                                        doDelete(deleteRow.getIdServiceProvide());
+                                        doDelete(deleteRow);
                                         AddTriggerJasaService.refreshAdapter();
                                     }
                                 }
@@ -137,15 +144,31 @@ public class RecycleViewListAdapter extends BaseAdapter{
     }
 
 
-    private void doDelete(String id){
+    private void doDelete(ServiceProvide sp){
+        // delete data in db SQLite
         DatabaseHelper dbh = new DatabaseHelper(context);
         SQLiteDatabase db = dbh.getWritableDatabase();
         try {
-            db.execSQL("DELETE FROM "+ ServiceProvide.tbl_service_provice +" WHERE "+ServiceProvide.clm_id_service_provide+" = '"+id+"'");
+            db.execSQL("DELETE FROM "+ ServiceProvide.tbl_service_provice +" WHERE "+ServiceProvide.clm_id_service_provide+" = '"+sp.getIdServiceProvide()+"'");
         }catch (Exception e){
-            e.printStackTrace();
+            Log.e("Delete Error", e.toString());
         }finally {
             db.close();
         }
+
+        // delete data in webservice
+        try {
+            deleteServiceProvideToServer addUser = new deleteServiceProvideToServer();
+            addUser.setIpServer(ipServer);
+            addUser.setActivity(activity);
+            addUser.setServiceProvide(sp);
+            addUser.setContext(context);
+            addUser.execute();
+        }catch (Exception e){
+            Log.e("Delete Error", e.toString());
+        }
     }
 }
+
+
+

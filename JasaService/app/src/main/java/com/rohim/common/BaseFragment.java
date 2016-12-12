@@ -62,6 +62,8 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
     public Dao<User, String> userDao = null;
     public static String keyIpAddress = "IpAddress";
     public static String keyAddres = "Address";
+    public String ipServer = null;
+    public String idUser;
 
     @Nullable
     @Override
@@ -78,6 +80,8 @@ public class BaseFragment extends Fragment  implements Utils.OnSubmitListener{
 
         editorSharedPreference = getContext().getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE).edit();
         sharedPreference = getContext().getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
+        ipServer = sharedPreference.getString("IpAddress","");
+        idUser = sharedPreference.getString("IdUser","");
         // load Service DB
         try {
             serviceDao = dbh.getServiceDao();

@@ -17,20 +17,20 @@ import com.google.gson.Gson;
 import model.FirebaseBody;
 import model.FirebaseNotification;
 
-public class pushNotificationToFirebase {
-	public static void main(String[] args) {
+public class PushNotificationToFirebase {
+	public void pushNotificationToClient(String token, String msgTitle, String msgBody) {
 		  try {
 
 			ClientRequest request = new ClientRequest("https://gcm-http.googleapis.com/gcm/send");
 			request.accept("application/json");
-			request.header("Authorization", "key=AIzaSyCncqRmDrP_rrhA1HlNZodxjOabvCKePkM");
+			request.header("Authorization", "key=AAAA1oUTkvM:APA91bGJ5gJ2xJYm9dYvUkJ8NmMq4v-AlFp-R-eBkP71UvgKwc_9aZOko9rLORYsCb0uD7Y56hBijk-otwnwz7ylW9ujFlVMlcAZjbfzinS-DRG7Fs-4acnwstPgeHXYvLMWI_wlNuy3SIuNExRxAt-nUjPu1tpdhg");
 			
 			FirebaseNotification notification = new FirebaseNotification();
-			notification.setBody("Coba Jasa Service");
-			notification.setTitle("Send From Web Service");
+			notification.setBody(msgBody);
+			notification.setTitle(msgTitle);
 			
 			FirebaseBody firebaseBody = new FirebaseBody();
-			firebaseBody.setTo("fr-86GzFWwM:APA91bEWS0lBFcULvaeKyWDzmXn5BRY0nYwCckKcdw3esr2JUC7c027YOdNuP-0ByhDC8NPxpmN7m0jNITNgzXQg8ZrEmxwWjjHnL9C6_qzfSN1GOUuF1JOuVxfEzz26j02-KuTfwkTG");;
+			firebaseBody.setTo(token);;
 			firebaseBody.setNotification(notification);
 			
 			Gson json = new Gson();
@@ -54,18 +54,11 @@ public class pushNotificationToFirebase {
 			}
 
 		  } catch (ClientProtocolException e) {
-
 			e.printStackTrace();
-
 		  } catch (IOException e) {
-
 			e.printStackTrace();
-
 		  } catch (Exception e) {
-
 			e.printStackTrace();
-
 		  }
-
 		}
 }

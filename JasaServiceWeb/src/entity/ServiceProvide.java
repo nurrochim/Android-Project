@@ -20,6 +20,7 @@ public class ServiceProvide {
     String description;
     String status;
     String pengalaman;
+    String fidUser;
 
     public ServiceProvide(){
 
@@ -81,4 +82,14 @@ public class ServiceProvide {
     public void setPengalaman(String pengalaman) {
         this.pengalaman = pengalaman;
     }
+
+	public String getFidUser() {
+		return fidUser;
+	}
+
+	public void setFidUser(String fidUser) {
+		this.fidUser = fidUser;
+	}
+    
+    
 }

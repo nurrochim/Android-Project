@@ -28,7 +28,7 @@ public class RequestAccepted {
 
     String idRequest;
     String fidService;
-    String fidServiceProvice;
+    String fidServiceProvide;
     String fidUserCreate;
     String clientName;
     String clientFotoProfil;
@@ -65,12 +65,12 @@ public class RequestAccepted {
         this.fidService = fidService;
     }
 
-    public String getFidServiceProvice() {
-        return fidServiceProvice;
+    public String getFidServiceProvide() {
+        return fidServiceProvide;
     }
 
-    public void setFidServiceProvice(String fidServiceProvice) {
-        this.fidServiceProvice = fidServiceProvice;
+    public void setFidServiceProvide(String fidServiceProvice) {
+        this.fidServiceProvide = fidServiceProvice;
     }
 
     public String getFidUserCreate() {

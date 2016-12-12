@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -152,6 +153,15 @@ public class MainActivity extends AppCompatActivity
 
         // database init
         databaseInit();
+
+        // jika di buka dari Penyedia Jasa
+        // jika ada New Task maka screen yang pertama muncul adalah Accept/Ignore
+        if (getIntent().hasExtra("idRequest")) {
+            FragmentRequestActiveTask activeTask= new FragmentRequestActiveTask();
+            activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
+            fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
+        }
+
     }
 
     @Override
@@ -260,23 +270,28 @@ public class MainActivity extends AppCompatActivity
         // load list view
         try {
             SharedPreferences prefs = getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
-            idUser = prefs.getString("IdUser","");
+            SharedPreferences.Editor editorSharedPreference  = prefs.edit();
+//            idUser = prefs.getString("IdUser","");
 
-            if(!idUser.isEmpty()) {
+//            if(!idUser.isEmpty()) {
                 // create conection db
                 userDao = dbh.getUserDao();
 
-                List<User> listUser = userDao.queryForEq(User.clm_id_user, idUser);
-                if (listUser != null) {
+                //List<User> listUser = userDao.queryForEq(User.clm_id_user, idUser);
+                List<User> listUser = userDao.queryForAll();
+                if (listUser != null && listUser.size()>0) {
                     user = listUser.get(0);
                     textUserName.setText(user.getUserName());
-                    textEmail.setText(user.getEmail());
+                    editorSharedPreference.putString("IdUser", user.getIdUser());
+                    idUser = user.getIdUser();
                 }
                 // Close DB Conection
                 dbh.close();
-            }
+  //          }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e("Error",  e.toString());
+        }catch (Exception e) {
+            Log.e("Error", e.toString());
         } finally {
             dbh.close();
         }

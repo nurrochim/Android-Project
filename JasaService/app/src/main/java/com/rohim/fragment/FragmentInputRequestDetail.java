@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
+import com.rohim.asyncTaskServer.addRequestOrderToServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.common.DatabaseHelper;
 import com.rohim.enumeration.EnumInputService;
@@ -66,7 +68,7 @@ public class FragmentInputRequestDetail extends BaseFragment {
                     if(!seePreviousRequestInProcess()) {
                         boolean isSucces = doSave();
                         if (isSucces) {
-                            createToast("Terimakasih... \n Request anda sedang dalam proses");
+//                            createToast("Terimakasih... \n Request anda sedang dalam proses");
                             getFragmentManager().popBackStack();
                         } else {
                             createToast("Maaf... Sepertinya ada masalah \n kami akan memperbaikinya segera");
@@ -124,21 +126,32 @@ public class FragmentInputRequestDetail extends BaseFragment {
                 String idRequestOrder = idUser + "/" + idService + "_" + System.currentTimeMillis();
                 RequestOrder ro = new RequestOrder();
                 ro.setIdRequest(idRequestOrder);
-                //ro.setFidUserCreate(idUser);
+                ro.setFidUserCreate(idUser);
                 ro.setStatus("NEW");
                 ro.setFidService(idService);
                 //ro.setUserName(user.getUserName());
                 //ro.setUserNoTelfon(user.getNoTelp());
                 ro.setCreateDate(new Date());
-                requestOrderDao.create(ro);
+               // requestOrderDao.create(ro);
 
                 // Save Request Detail
                 for (RequestDetail rqDet : data) {
                     rqDet.setIdRequestDetail(idRequestOrder + "/Detail_" + dataDetail);
                     rqDet.setFidRequest(idRequestOrder);
-                    requestDetailDao.create(rqDet);
+             //       requestDetailDao.create(rqDet);
                     dataDetail++;
                 }
+
+                // synchronize to server
+                Gson gson = new Gson();
+                String listDataJson = gson.toJson(ro)+"#{requestDetail : "+gson.toJson(data)+"}";
+
+                addRequestOrderToServer addRequestOrder = new addRequestOrderToServer();
+                addRequestOrder.setIpServer(ipServer);
+                addRequestOrder.setActivity(getActivity());
+                addRequestOrder.setListDataJson(listDataJson);
+                addRequestOrder.setContext(getContext());
+                addRequestOrder.execute();
             }
             // Close DB Conection
             dbh.close();
@@ -165,7 +178,8 @@ public class FragmentInputRequestDetail extends BaseFragment {
 
             if(listOrder.size()>0){
                 isPreviousRequestStillProcess = true;
-                createToast("Maaf... Tidak dapat melanjutkan \n request anda sebelum ini masih dalam proses");
+                createToast("Maaf... Tidak dapat melanjutkan \n Sebab Request sebelumnya masih dalam proses");
+            //requestOrderDao.deleteBuilder().where().in(RequestOrder.clm_status,status).query();
             }
 
         } catch (SQLException e) {

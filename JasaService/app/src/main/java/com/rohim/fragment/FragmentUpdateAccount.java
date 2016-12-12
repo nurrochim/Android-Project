@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
+import com.rohim.asyncTaskServer.addUserToServer;
+import com.rohim.asyncTaskServer.updateUserToServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.jasaservice.MainActivity;
 import com.rohim.jasaservice.R;
@@ -35,7 +38,6 @@ public class FragmentUpdateAccount extends BaseFragment {
     Button btnSave, btnUpdatePassword;
     EditText textUserName, textNoTelp, textEmail, textCurrentPassword, textNewPassword, textConfirmPassword;
     User user = new User();
-    String idUser = "";
 
     @Override
     public void initView() {
@@ -47,9 +49,6 @@ public class FragmentUpdateAccount extends BaseFragment {
         textNewPassword = (EditText) view.findViewById(R.id.text_new_password_acccount_insert);
         textConfirmPassword = (EditText) view.findViewById(R.id.text_confirm_password_acccount_insert);
 
-        // get Id User
-        SharedPreferences prefs = getContext().getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
-        idUser = prefs.getString("IdUser","");
         loadInit();
 
         btnSave = (Button) view.findViewById(R.id.btn_save_account_update);
@@ -85,8 +84,19 @@ public class FragmentUpdateAccount extends BaseFragment {
                         // Close DB Conection
                         dbh.close();
 
+                        updateUserToServer updateUser = new updateUserToServer();
+                        updateUser.setIpServer(ipServer);
+                        updateUser.setActivity(getActivity());
+                        updateUser.setUser(user);
+                        updateUser.setContext(getContext());
+                        updateUser.execute();
+
+
                     } catch (SQLException e) {
                         e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.e("Buffer Error", "Error converting result " + e.toString());
+                        createToast("Ups...Maaf, pendaftaran gagal");
                     } finally {
                         dbh.close();
                     }
@@ -122,8 +132,20 @@ public class FragmentUpdateAccount extends BaseFragment {
                         // Close DB Conection
                         dbh.close();
 
+                        updateUserToServer updateUser = new updateUserToServer();
+                        updateUser.setIpServer(ipServer);
+                        updateUser.setActivity(getActivity());
+                        updateUser.setUser(user);
+                        updateUser.setContext(getContext());
+                        updateUser.setUpdate("PASSWORD");
+                        updateUser.execute();
+
+
                     } catch (SQLException e) {
                         e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.e("Update Erros", e.toString());
+                        createToast("Ups...Maaf, pendaftaran gagal");
                     } finally {
                         dbh.close();
                     }
@@ -137,7 +159,7 @@ public class FragmentUpdateAccount extends BaseFragment {
         try {
             openDatabaseHelper();
             List<User> listUser = userDao.queryForEq(User.clm_id_user, idUser);
-            if(listUser != null){
+            if(listUser != null && listUser.size()>0){
                 user = listUser.get(0);
                 textUserName.setText(user.getUserName());
                 textNoTelp.setText(user.getNoTelp());

@@ -19,6 +19,7 @@ public class FragmentSetting extends BaseFragment {
     public void initView() {
         view = inflater.inflate(R.layout.setting_factory, container, false);
         ipAddresText = (EditText) view.findViewById(R.id.ipAddress);
+        ipAddresText.setText("192.168.0.");
         save = (Button) view.findViewById(R.id.btn_save_setting);
 
         save.setOnClickListener(new View.OnClickListener() {

@@ -12,19 +12,17 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.j256.ormlite.android.AndroidConnectionSource;
+import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.rohim.adapter.NothingSelectedSpinnerAdapter;
 import com.rohim.adapter.RecycleViewListAdapter;
+import com.rohim.asyncTaskServer.addServiceProvidesToServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.common.DatabaseHelper;
 import com.rohim.common.PopupNotification;
 import com.rohim.jasaservice.R;
-import com.rohim.modal.DropDownList;
 import com.rohim.modal.Service;
-import com.rohim.modal.ServiceItem;
 import com.rohim.modal.ServiceProvide;
-import com.rohim.modal.User;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +37,7 @@ import java.util.List;
  */
 
 public class AddTriggerJasaService extends BaseFragment{
-    Button btnTambahJasa, btnSave;
+    Button btnTambahJasa, btnSubmit;
     private static Spinner spinnerJasaService;
     private static ListView listview;
     private static RecycleViewListAdapter adapterListView;
@@ -52,6 +50,7 @@ public class AddTriggerJasaService extends BaseFragment{
     public FragmentManager fragmentManager;
     private static DatabaseHelper dbhStatic ;
     private static Activity activity;
+    private static String ipserver;
 
     private static String idUser;
 
@@ -59,19 +58,28 @@ public class AddTriggerJasaService extends BaseFragment{
     public void initView() {
         view = inflater.inflate(R.layout.tambah_jasa, container, false);
         btnTambahJasa = (Button) view.findViewById(R.id.btn_tambah_jasa_service);
-        btnSave = (Button) view.findViewById(R.id.btn_save_tambah_jasa_service);
+        btnSubmit = (Button) view.findViewById(R.id.btn_save_tambah_jasa_service);
         contexts = getContext();
         fragmentManager= getFragmentManager();
         activity = getActivity();
+        ipserver = ipServer;
 
         idUser = sharedPreference.getString("IdUser","");
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(idUser.isEmpty()) {
                     popupNotification.show(fragmentManager, "");
                 } else {
-                  // doSave
+                    Gson gson = new Gson();
+                    String listServiceProvidesJson = "{serviceProvides : "+gson.toJson(data)+"}";
+                    addServiceProvidesToServer addUser = new addServiceProvidesToServer();
+                    addUser.setIpServer(ipServer);
+                    addUser.setActivity(getActivity());
+                    addUser.setListServiceProvides(listServiceProvidesJson);
+                    addUser.setContext(getContext());
+                    addUser.execute();
+
                 }
             }
         });
@@ -123,7 +131,7 @@ public class AddTriggerJasaService extends BaseFragment{
                     if(addJasaFromSpinner) {
                         ServiceProvide item = new ServiceProvide();
                         item.setServiceName(selectedJasa);
-                        item.setFidService(listService.get(position).getIdService());
+                        item.setFidService(listService.get(position-1).getIdService());
                         item.setIdServiceProvide(idUser+"/"+item.getFidService()+"/"+selectedJasa);
 
                         // save data
@@ -149,7 +157,7 @@ public class AddTriggerJasaService extends BaseFragment{
 
         // load list view
         listview = (ListView) view.findViewById(R.id.list_view_jasa);
-        adapterListView = new RecycleViewListAdapter(getContext(), data, spinnerJasaService);
+        adapterListView = new RecycleViewListAdapter(getContext(), data, spinnerJasaService, getActivity(), ipServer);
         listview.setAdapter(adapterListView);
     }
 
@@ -158,7 +166,7 @@ public class AddTriggerJasaService extends BaseFragment{
             dbhStatic = new DatabaseHelper(activity);
             Dao<ServiceProvide, String>  staticServiceProvideDao = dbhStatic.getServiceProvideDao();
             data = staticServiceProvideDao.queryBuilder().where().like(ServiceProvide.clm_id_service_provide,idUser+"%").query();
-            adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService);
+            adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService, activity, ipserver);
             listview.setAdapter(adapterListView);
         } catch (SQLException e) {
             e.printStackTrace();

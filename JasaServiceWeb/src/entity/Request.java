@@ -44,6 +44,16 @@ public class Request {
 
     public Request() {
     }
+    
+    public Request(RequestOrder ro) {
+    	this.idRequest = ro.getIdRequest();
+    	this.fidUserCreate = ro.getFidUserCreate();
+    	this.fidService = ro.getFidService();
+    	this.status = ro.getStatus();
+    	this.startTime = ro.getStartTime();
+    	this.createDate = new Date();
+    	
+    }
 
     public String getIdRequest() {
         return idRequest;

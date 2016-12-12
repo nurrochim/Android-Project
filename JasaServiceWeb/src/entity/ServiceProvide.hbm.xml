@@ -21,6 +21,9 @@
     <property name="pengalaman">
       <column name="PENGALAMAN"/>
     </property>
+    <property name="fidUser">
+      <column name="FID_USER"/>
+    </property>
     
   </class>
 </hibernate-mapping>

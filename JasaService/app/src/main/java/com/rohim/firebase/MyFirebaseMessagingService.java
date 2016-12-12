@@ -36,15 +36,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //This method is only generating push notification
     //It is same as we did in earlier posts
     private void sendNotification(RemoteMessage.Notification notification) {
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+        String notifTitleSplit[] = notification.getTitle().split("#");
+        String notifTitle = notifTitleSplit[0];
+        String idRequest = "";
+        if(notifTitle.equals("RO")){
+            notifTitle = "New Task";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+        }
+
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(notification.getTitle())
+                .setSmallIcon(R.drawable.launcher_b)
+                .setContentTitle(notifTitle)
                 .setContentText(notification.getBody())
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

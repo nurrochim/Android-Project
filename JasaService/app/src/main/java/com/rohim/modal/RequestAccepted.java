@@ -36,7 +36,7 @@ public class RequestAccepted {
     @DatabaseField(columnName = clm_fid_service)
     String fidService;
     @DatabaseField(columnName = clm_fid_service_provide)
-    String fidServiceProvice;
+    String fidServiceProvide;
     @DatabaseField(columnName = clm_fid_user)
     String fidUserCreate;
     @DatabaseField(columnName = clm_client_name)
@@ -88,12 +88,12 @@ public class RequestAccepted {
         this.fidService = fidService;
     }
 
-    public String getFidServiceProvice() {
-        return fidServiceProvice;
+    public String getFidServiceProvide() {
+        return fidServiceProvide;
     }
 
-    public void setFidServiceProvice(String fidServiceProvice) {
-        this.fidServiceProvice = fidServiceProvice;
+    public void setFidServiceProvide(String fidServiceProvide) {
+        this.fidServiceProvide = fidServiceProvide;
     }
 
     public String getFidUserCreate() {

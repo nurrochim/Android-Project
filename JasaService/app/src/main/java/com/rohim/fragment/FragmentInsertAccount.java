@@ -3,6 +3,7 @@ package com.rohim.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.rohim.asyncTaskServer.addUserToServer;
+import com.rohim.asyncTaskServer.loginToServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.jasaservice.LoginActivity;
 import com.rohim.jasaservice.R;
@@ -100,19 +103,27 @@ public class FragmentInsertAccount extends BaseFragment {
                         user.setJenisUser(jenisUser);
 
                         // get token for Firebase notification
-                        String token = "";//FirebaseInstanceId.getInstance().getId();
+                        String token = FirebaseInstanceId.getInstance().getToken();
                         user.setToken(token);
                         try {
-                            userDao.create(user);
-                            createToast("Terimakasih... Pendaftaran account berhasil");
-                            dbh.close();
+//                            userDao.create(user);
+//                            createToast("Terimakasih... Pendaftaran account berhasil");
+//                            dbh.close();
+//
+//                            // login screen
+//                            Intent intent = new Intent(getContext(), LoginActivity.class);
+//                            startActivityForResult(intent, 0);
+//                            ActivityCompat.finishAffinity(getActivity());
 
-                            // login screen
-                            Intent intent = new Intent(getContext(), LoginActivity.class);
-                            startActivityForResult(intent, 0);
-                            ActivityCompat.finishAffinity(getActivity());
-                        } catch (SQLException e) {
-                            e.printStackTrace();
+                            addUserToServer addUser = new addUserToServer();
+                            addUser.setIpServer(ipServer);
+                            addUser.setActivity(getActivity());
+                            addUser.setUser(user);
+                            addUser.setContext(getContext());
+                            addUser.execute();
+
+                        } catch (Exception e) {
+                            Log.e("Insert Error", e.toString());
                             createToast("Ups...Maaf, pendaftaran gagal");
                         }
                     }

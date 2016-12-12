@@ -60,7 +60,7 @@
         android:layout_alignParentBottom="true"
         >
 
-        <Button android:text="Tambah Sevice"
+        <Button android:text="Tambah Service"
             android:layout_width="match_parent"
             android:layout_height="8mm"
             android:id="@+id/btn_tambah_jasa_service"
@@ -68,7 +68,7 @@
             android:background="@drawable/shape_button_v3"
             />
 
-        <Button android:text="Save"
+        <Button android:text="Submit"
             android:layout_width="match_parent"
             android:layout_height="8mm"
             android:id="@+id/btn_save_tambah_jasa_service"
