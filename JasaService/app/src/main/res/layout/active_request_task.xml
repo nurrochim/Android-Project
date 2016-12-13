@@ -37,7 +37,7 @@
         android:weightSum="1"
         android:layout_alignParentBottom="true"
         >
-        <Button android:text="Cancel"
+        <Button android:text="Ignore"
             android:layout_width="match_parent"
             android:layout_height="7mm"
             android:id="@+id/btn_cancel_request_task"

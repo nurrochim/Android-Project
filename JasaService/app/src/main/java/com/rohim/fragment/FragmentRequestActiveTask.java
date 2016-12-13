@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,10 +54,51 @@ public class FragmentRequestActiveTask extends BaseFragment {
 
         if(isNew){
             btnAcceptFinish.setText("Accept");
+            btnCancel.setText("Ignore");
         }else{
             btnAcceptFinish.setText("Finish");
+            btnCancel.setText("Cancel");
         }
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnCancel.getText().toString().equals("Ignore")){
+
+                }else{// do cancel
+
+                }
+            }
+        });
+
+        btnAcceptFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnAcceptFinish.getText().toString().equals("Accept")){
+                    openDatabaseHelper();
+                    try {
+                        requestAccepted.setStatus("PROCESS");
+                        requestAcceptedDao.create(requestAccepted);
+
+                        for(RequestDetail rd : data){
+                            rd.setIdRequestDetail(rd.getIdRequestDetail()+"#Accpted");
+                            requestDetailDao.create(rd);
+                        }
+
+                    } catch (SQLException e) {
+                        Log.e("Insert Error", e.toString());
+                    } finally {
+                        dbh.close();
+                    }
+
+                    // synchronize data with server
+
+
+                }else{//do finish
+
+                }
+            }
+        });
 
     }
 

@@ -2,6 +2,7 @@ package Rest;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import ThreadService.AssignmentService;
+import entity.HistoryRequest;
 import entity.Request;
 import entity.RequestAccepted;
 import entity.RequestDetail;
@@ -119,7 +121,10 @@ public class SimpleRestService {
 		        response = "Succes";
 		        
 		        PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
-		        pushNotif.pushNotificationToClient(user.getToken(), "Konfirmasi Pendaftaran", "Terimaksih, Pendaftaran Account anda berhasil");
+				pushNotif.setMsgTitle("Konfirmasi Pendaftaran");
+				pushNotif.setMsgBody("Terimaksih, Pendaftaran Account anda berhasil");
+				pushNotif.setToken(user.getToken());
+				new Thread(pushNotif).start();
 
 	        }
 	        HibernateHelper.commitTx(closeAfter);
@@ -314,10 +319,13 @@ public class SimpleRestService {
 	        HibernateHelper.rollbackTx(closeAfter);
 	        e.printStackTrace();
 	        response = "Error";
-	    } finally {
+	    } 
+		
+		if(response.equals("Succes")){
 			AssignmentService assignmentService = new AssignmentService();
 			assignmentService.setIdRequest(idRequest);
-			assignmentService.run();
+			new Thread(assignmentService).start();
+			
 		}
 		return Response.status(201).entity(response).build();
 	}
@@ -366,7 +374,248 @@ public class SimpleRestService {
 	        response = "Error";
 	        return Response.serverError().build();
 	    }
-	}	
+	}
+	
+	
+	@POST
+	@Path("/postAcceptedRequestTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postAcceptedRequestTask(@QueryParam("idRequest") String idRequest,
+			@QueryParam("idUserAccepted") String idUserAccepted, @QueryParam("idUserCreate") String idUserCreate) {
+		String response = null;
+		boolean closeAfter = false;
+		
+		try {
+	        closeAfter = HibernateHelper.beginTx();
+	        Session session = HibernateHelper.getSession();
+	        session.beginTransaction();
+	        
+	        String SQL = "UPDATE TBL_REQUEST SET STATUS = 'PROCESS', FID_USER_ACCEPT = '"+idUserAccepted+"' WHERE ID_REQUEST = '"+idRequest+"'";
+	        session.createSQLQuery(SQL);
+	        
+	        HistoryRequest hr = new HistoryRequest();
+	        hr.setIdHistoryRequest(String.valueOf(System.currentTimeMillis()));
+	        hr.setFidRequest(idRequest);
+	        hr.setCreateBy(idUserAccepted);
+	        hr.setCreateDate(new Date());
+	        hr.setStatus("PROCESS");
+	        
+	        session.save(hr);
+	        session.flush();
+	        
+	        response = "Succes";
+	        
+	        HibernateHelper.commitTx(closeAfter);
+	    } catch (Exception e) {
+	        HibernateHelper.rollbackTx(closeAfter);
+	        e.printStackTrace();
+	        response = "Error";
+	    }
+		
+		if(response.equals("Succes")){
+			String token = "";
+			String userNameAccepted = "";
+			String userNoTelp = "";
+			
+			try {
+		        closeAfter = HibernateHelper.beginTx();
+		        Session session = HibernateHelper.getSession();
+		        session.beginTransaction();
+		        
+		        User user = (User) session.createCriteria(User.class).add(Restrictions.eq("idUser", idUserAccepted)).setMaxResults(1).uniqueResult();
+		        token = user.getToken();
+		        userNameAccepted = user.getUserName();
+		        userNoTelp = user.getNoTelp();
+		        
+		        HibernateHelper.commitTx(closeAfter);
+		    } catch (Exception e) {
+		        HibernateHelper.rollbackTx(closeAfter);
+		        e.printStackTrace();
+		    }
+			
+			
+			PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
+			pushNotif.setMsgBody("Penyedia jasa terdekat sedang menuju ke tempat anda");
+			pushNotif.setMsgTitle("PROCESS#"+idRequest+"#"+idUserAccepted+"#"+userNameAccepted+"#"+userNoTelp);
+			pushNotif.setToken(token);
+			new Thread(pushNotif).start();
+		}
+		return Response.status(201).entity(response).build();
+	}
+	
+	
+
+	@POST
+	@Path("/postIgnoreRequestTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postIgnoreRequestTask(@QueryParam("idRequest") String idRequest,
+			@QueryParam("idUserAccepted") String idUserAccepted) {
+		String response = null;
+		boolean closeAfter = false;
+		
+		try {
+	        closeAfter = HibernateHelper.beginTx();
+	        Session session = HibernateHelper.getSession();
+	        session.beginTransaction();
+	        
+	        HistoryRequest hr = new HistoryRequest();
+	        hr.setIdHistoryRequest(String.valueOf(System.currentTimeMillis()));
+	        hr.setFidRequest(idRequest);
+	        hr.setCreateBy(idUserAccepted);
+	        hr.setCreateDate(new Date());
+	        hr.setStatus("IGNORED");
+	        
+	        session.save(hr);
+	        session.flush();
+	        
+	        response = "Succes";
+	        
+	        HibernateHelper.commitTx(closeAfter);
+	    } catch (Exception e) {
+	        HibernateHelper.rollbackTx(closeAfter);
+	        e.printStackTrace();
+	        response = "Error";
+	    }
+		
+		if(response.equals("Succes")){
+			AssignmentService assignmentService = new AssignmentService();
+			assignmentService.setIdRequest(idRequest);
+			new Thread(assignmentService).start();
+		}
+		return Response.status(201).entity(response).build();
+	}
+	
+	@POST
+	@Path("/postFinishRequestTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postFinishRequestTask(@QueryParam("idRequest") String idRequest, @QueryParam("idUserAccepted") String idUserAccepted) {
+		String response = null;
+		boolean closeAfter = false;
+		
+		try {
+	        closeAfter = HibernateHelper.beginTx();
+	        Session session = HibernateHelper.getSession();
+	        session.beginTransaction();
+	        
+	        String SQL = "UPDATE TBL_REQUEST SET STATUS = 'FINISH' WHERE ID_REQUEST = '"+idRequest+"'";
+	        session.createSQLQuery(SQL);
+	        
+	        HistoryRequest hr = new HistoryRequest();
+	        hr.setIdHistoryRequest(String.valueOf(System.currentTimeMillis()));
+	        hr.setFidRequest(idRequest);
+	        hr.setCreateBy(idUserAccepted);
+	        hr.setCreateDate(new Date());
+	        hr.setStatus("FINISH");
+	        
+	        session.save(hr);
+	        session.flush();
+	        
+	        response = "Succes";
+	        
+	        HibernateHelper.commitTx(closeAfter);
+	    } catch (Exception e) {
+	        HibernateHelper.rollbackTx(closeAfter);
+	        e.printStackTrace();
+	        response = "Error";
+	    }
+		
+		if(response.equals("Succes")){
+			String token = "";
+			String userNameAccepted = "";
+			String userNoTelp = "";
+			
+			try {
+		        closeAfter = HibernateHelper.beginTx();
+		        Session session = HibernateHelper.getSession();
+		        session.beginTransaction();
+		        
+		        User user = (User) session.createCriteria(User.class).add(Restrictions.eq("idUser", idUserAccepted)).setMaxResults(1).uniqueResult();
+		        token = user.getToken();
+		        userNameAccepted = user.getUserName();
+		        userNoTelp = user.getNoTelp();
+		        
+		        HibernateHelper.commitTx(closeAfter);
+		    } catch (Exception e) {
+		        HibernateHelper.rollbackTx(closeAfter);
+		        e.printStackTrace();
+		    }
+			
+			if(!token.isEmpty()){
+				PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
+				pushNotif.setMsgBody("Terimakasih telah menggunakan layanan kami");
+				pushNotif.setMsgTitle("FINISH#"+idRequest+"#Finish Service Confirmation");
+				pushNotif.setToken(token);
+				new Thread(pushNotif).start();	
+			}
+		}
+		return Response.status(201).entity(response).build();
+	}
+	
+
+	@POST
+	@Path("/postCancelRequestTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postCancelRequestTask(@QueryParam("idRequest") String idRequest,
+			@QueryParam("idUserAccepted") String idUserAccepted,@QueryParam("idUserCreated") String idUserCreated , @QueryParam("reason") String reason) {
+		String response = null;
+		boolean closeAfter = false;
+		
+		try {
+	        closeAfter = HibernateHelper.beginTx();
+	        Session session = HibernateHelper.getSession();
+	        session.beginTransaction();
+	        
+	        HistoryRequest hr = new HistoryRequest();
+	        hr.setIdHistoryRequest(String.valueOf(System.currentTimeMillis()));
+	        hr.setFidRequest(idRequest);
+	        hr.setCreateBy(idUserAccepted);
+	        hr.setCreateDate(new Date());
+	        hr.setStatus("CANCEL");
+	        hr.setReason(reason);
+	        
+	        session.save(hr);
+	        session.flush();
+	        
+	        response = "Succes";
+	        
+	        HibernateHelper.commitTx(closeAfter);
+	    } catch (Exception e) {
+	        HibernateHelper.rollbackTx(closeAfter);
+	        e.printStackTrace();
+	        response = "Error";
+	    }
+		
+		if(response.equals("Succes")){
+			
+			String token = "";
+			
+			try {
+		        closeAfter = HibernateHelper.beginTx();
+		        Session session = HibernateHelper.getSession();
+		        session.beginTransaction();
+		        
+		        User user = (User) session.createCriteria(User.class).add(Restrictions.eq("idUser", idUserCreated)).setMaxResults(1).uniqueResult();
+		        token = user.getToken();
+		        	
+		        PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
+				pushNotif.setMsgBody("Maaf, tukang service kami tidak bisa datang \n Kami sedang mencari penggantinya");
+				pushNotif.setMsgTitle("CANCEL#"+idRequest+"#Replace Enginer");
+				pushNotif.setToken(token);
+				new Thread(pushNotif).start();
+				
+		        HibernateHelper.commitTx(closeAfter);
+		    } catch (Exception e) {
+		        HibernateHelper.rollbackTx(closeAfter);
+		        e.printStackTrace();
+		    }
+			
+			AssignmentService assignmentService = new AssignmentService();
+			assignmentService.setIdRequest(idRequest);
+			new Thread(assignmentService).start();
+		}
+		return Response.status(201).entity(response).build();
+	}
+	
 	/*
 	@GET
 	@Path("/<add method name here>")

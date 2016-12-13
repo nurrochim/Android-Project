@@ -19,6 +19,10 @@ public class BaseJsonService {
     public static String deleteServiceProvides = "postDeleteServiceProvides";
     public static String addRequestOrder = "postAddRequestOrder";
     public static String getRequestAccept = "getRequestAccept";
+    public static String postAcceptedRequestTask = "postAcceptedRequestTask";
+    public static String postIgnoreRequestTask = "postIgnoreRequestTask";
+    public static String postFinishRequestTask = "postFinishRequestTask";
+
 
     public Gson gson = new Gson();
     String output;

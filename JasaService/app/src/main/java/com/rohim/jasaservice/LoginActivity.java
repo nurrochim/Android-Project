@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -61,7 +62,7 @@ public class LoginActivity extends Activity{
         try {
             userDao = dbh.getUserDao();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e("Insert Error", e.toString());
         }
 
         login = (Button) findViewById(R.id.login_button);

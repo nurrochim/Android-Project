@@ -9,4 +9,24 @@ public class JsonServiceRequestAccept extends BaseJsonService{
         String json = jsonParser.getJSONFromUrl(getFullPathService()+getRequestAccept+"?idRequest="+idRequest+"&idUserPenyediaJasa="+idUserPenyediaJasa, null);
         return json;
     }
+
+    public String acceptRequest(String idRequest, String idUserCreate,String idUserAccept){
+        String json = jsonParser.getJSONFromUrl(getFullPathService()+getRequestAccept+"?idRequest="+idRequest+"&idUserAccepted="+idUserAccept+"&idUserCreate="+idUserCreate, null);
+        return json;
+    }
+
+    public String ignoreRequest(String idRequest, String idUserAccept){
+        String json = jsonParser.getJSONFromUrl(getFullPathService()+getRequestAccept+"?idRequest="+idRequest+"&idUserAccepted="+idUserAccept, null);
+        return json;
+    }
+
+    public String cancelRequest(String idRequest, String idUserAccept, String idUserCreated, String reason){
+        String json = jsonParser.getJSONFromUrl(getFullPathService()+getRequestAccept+"?idRequest="+idRequest+"&idUserAccepted="+idUserAccept+"&idUserCreated="+idUserCreated+"&reason"+reason, null);
+        return json;
+    }
+
+    public String finishRequest(String idRequest, String idUserCreate,String idUserAccept){
+        String json = jsonParser.getJSONFromUrl(getFullPathService()+getRequestAccept+"?idRequest="+idRequest+"&idUserAccepted="+idUserAccept+"&idUserCreate="+idUserCreate, null);
+        return json;
+    }
 }
