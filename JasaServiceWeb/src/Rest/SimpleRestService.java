@@ -543,7 +543,7 @@ public class SimpleRestService {
 			if(!token.isEmpty()){
 				PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
 				pushNotif.setMsgBody("Terimakasih telah menggunakan layanan kami");
-				pushNotif.setMsgTitle("FINISH#"+idRequest+"#Finish Service Confirmation");
+				pushNotif.setMsgTitle("FINISH#"+idRequest);
 				pushNotif.setToken(token);
 				new Thread(pushNotif).start();	
 			}
@@ -599,7 +599,7 @@ public class SimpleRestService {
 		        	
 		        PushNotificationToFirebase pushNotif = new PushNotificationToFirebase();
 				pushNotif.setMsgBody("Maaf, tukang service kami tidak bisa datang \n Kami sedang mencari penggantinya");
-				pushNotif.setMsgTitle("CANCEL#"+idRequest+"#Replace Enginer");
+				pushNotif.setMsgTitle("CANCEL1#"+idRequest);
 				pushNotif.setToken(token);
 				new Thread(pushNotif).start();
 				

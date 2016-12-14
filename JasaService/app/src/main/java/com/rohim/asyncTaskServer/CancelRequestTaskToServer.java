@@ -3,38 +3,25 @@ package com.rohim.asyncTaskServer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.j256.ormlite.dao.Dao;
-import com.rohim.common.DatabaseHelper;
-import com.rohim.jasaservice.MainActivity;
-import com.rohim.json_controller.JsonAccount;
 import com.rohim.json_controller.JsonServiceRequestAccept;
-import com.rohim.modal.User;
-
-import java.sql.SQLException;
-import java.util.HashMap;
 
 /**
  * Created by Asus on 10/12/2016.
  */
 
-public class AcceptRequestTaskToServer extends AsyncTask<Void, Void, Void>{
+public class CancelRequestTaskToServer extends AsyncTask<Void, Void, Void>{
     private View view;
     ProgressDialog mProgressDialog;
     Activity activity;
     String ipServer;
     Context context;
-    String idRequest, idUserCreate, idUserAccept, respon;
-    Button acceptFinish;
+    String idRequest, idUserCreate, idUserAccept, respon, reason;
 
     public String getIdRequest() {
         return idRequest;
@@ -88,12 +75,20 @@ public class AcceptRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         this.context = context;
     }
 
-    public Button getAcceptFinish() {
-        return acceptFinish;
+    public String getRespon() {
+        return respon;
     }
 
-    public void setAcceptFinish(Button acceptFinish) {
-        this.acceptFinish = acceptFinish;
+    public void setRespon(String respon) {
+        this.respon = respon;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @Override
@@ -116,7 +111,7 @@ public class AcceptRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         JsonServiceRequestAccept jsonServiceRequestAccept = new JsonServiceRequestAccept();
         jsonServiceRequestAccept.setIpAddres(ipServer);
 
-        respon = jsonServiceRequestAccept.acceptRequest(idRequest, idUserCreate, idUserAccept);
+        respon = jsonServiceRequestAccept.cancelRequest(idRequest, idUserAccept, idUserCreate, reason);
 
         return null;
     }
@@ -134,7 +129,6 @@ public class AcceptRequestTaskToServer extends AsyncTask<Void, Void, Void>{
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
             if( textView != null) textView.setGravity(Gravity.CENTER);
             toast.show();
-            acceptFinish.setText("FINISH");
         }else{
             textToast = "Maaf... Sepertinya ada masalah \n kami akan memperbaikinya segera";
             toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);

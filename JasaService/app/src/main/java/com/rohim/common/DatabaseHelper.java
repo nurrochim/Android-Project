@@ -369,6 +369,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             dp = new DropDownList(33, "Perawatan");dropdownListDao.create(dp);
             dp = new DropDownList(33, "Lainnya");dropdownListDao.create(dp);
 
+            dp = new DropDownList("REASON_CANCEL1", "Tempat Client Jauh");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL1", "Client tidak bisa dihubungi");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL1", "Client tidak jelas");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL1", "Lainnya");dropdownListDao.create(dp);
+
+            dp = new DropDownList("REASON_CANCEL2", "Tidak ada respon");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL2", "Berubah pikiran");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL2", "Tukang service kurang ahli");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_CANCEL2", "Lainnya");dropdownListDao.create(dp);
+
+            dp = new DropDownList("REASON_COMENT", "Sangat Puas");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_COMENT", "Puas");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_COMENT", "Lumayan");dropdownListDao.create(dp);
+            dp = new DropDownList("REASON_COMENT", "Kurang Puas");dropdownListDao.create(dp);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

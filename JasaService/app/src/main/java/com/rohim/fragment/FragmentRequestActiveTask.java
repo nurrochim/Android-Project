@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
+import com.rohim.asyncTaskServer.AcceptRequestTaskToServer;
+import com.rohim.asyncTaskServer.CancelRequestTaskToServer;
+import com.rohim.asyncTaskServer.FinishRequestTaskToServer;
+import com.rohim.asyncTaskServer.IgnoreRequestTaskToServer;
 import com.rohim.asyncTaskServer.getRequestAcceptedFromServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.jasaservice.R;
@@ -42,6 +46,7 @@ public class FragmentRequestActiveTask extends BaseFragment {
 
     @Override
     public void initView() {
+        idUser = "PENYEDIA_1481480127664";
         view = inflater.inflate(R.layout.active_request_task, container, false);
         listview = (RecyclerView) view.findViewById(R.id.list_view_jasa_request_task);
         textTitle = (TextView) view.findViewById(R.id.text_title_request_task);
@@ -63,10 +68,26 @@ public class FragmentRequestActiveTask extends BaseFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnCancel.getText().toString().equals("Ignore")){
-
+                if(btnCancel.getText().toString().equalsIgnoreCase("Ignore")){
+                    IgnoreRequestTaskToServer serviceServer = new IgnoreRequestTaskToServer();
+                    serviceServer.setIpServer(ipServer);
+                    serviceServer.setActivity(getActivity());
+                    serviceServer.setContext(getContext());
+                    serviceServer.setIdRequest(requestAccepted.getIdRequest());
+                    serviceServer.setIdUserCreate(requestAccepted.getFidUserCreate());
+                    serviceServer.setIdUserAccept(idUser);
+                    serviceServer.execute();
                 }else{// do cancel
-
+                    String reason = "Cancel by engineer";
+                    CancelRequestTaskToServer serviceServer = new CancelRequestTaskToServer();
+                    serviceServer.setIpServer(ipServer);
+                    serviceServer.setActivity(getActivity());
+                    serviceServer.setContext(getContext());
+                    serviceServer.setIdRequest(requestAccepted.getIdRequest());
+                    serviceServer.setIdUserCreate(requestAccepted.getFidUserCreate());
+                    serviceServer.setIdUserAccept(idUser);
+                    serviceServer.setReason(reason);
+                    serviceServer.execute();
                 }
             }
         });
@@ -74,7 +95,7 @@ public class FragmentRequestActiveTask extends BaseFragment {
         btnAcceptFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnAcceptFinish.getText().toString().equals("Accept")){
+                if(btnAcceptFinish.getText().toString().equalsIgnoreCase("Accept")){
                     openDatabaseHelper();
                     try {
                         requestAccepted.setStatus("PROCESS");
@@ -85,6 +106,16 @@ public class FragmentRequestActiveTask extends BaseFragment {
                             requestDetailDao.create(rd);
                         }
 
+                        AcceptRequestTaskToServer serviceServer = new AcceptRequestTaskToServer();
+                        serviceServer.setIpServer(ipServer);
+                        serviceServer.setActivity(getActivity());
+                        serviceServer.setContext(getContext());
+                        serviceServer.setAcceptFinish(btnAcceptFinish);
+                        serviceServer.setIdRequest(requestAccepted.getIdRequest());
+                        serviceServer.setIdUserCreate(requestAccepted.getFidUserCreate());
+                        serviceServer.setIdUserAccept(idUser);
+
+                        serviceServer.execute();
                     } catch (SQLException e) {
                         Log.e("Insert Error", e.toString());
                     } finally {
@@ -92,10 +123,29 @@ public class FragmentRequestActiveTask extends BaseFragment {
                     }
 
                     // synchronize data with server
-
-
                 }else{//do finish
+                    // confirm dialog
 
+                    // do finish
+                    FinishRequestTaskToServer serviceServer = new FinishRequestTaskToServer();
+                    serviceServer.setIpServer(ipServer);
+                    serviceServer.setActivity(getActivity());
+                    serviceServer.setContext(getContext());
+                    serviceServer.setIdRequest(requestAccepted.getIdRequest());
+                    serviceServer.setIdUserCreate(requestAccepted.getFidUserCreate());
+                    serviceServer.setIdUserAccept(idUser);
+                    serviceServer.execute();
+
+                    // update data in device
+                    openDatabaseHelper();
+                    try {
+                        requestAccepted.setStatus("FINISH");
+                        requestAcceptedDao.update(requestAccepted);
+                    } catch (SQLException e) {
+                        Log.e("Insert Error", e.toString());
+                    } finally {
+                        dbh.close();
+                    }
                 }
             }
         });
@@ -108,7 +158,7 @@ public class FragmentRequestActiveTask extends BaseFragment {
             requestAcceptedFromServer.setIpServer(ipServer);
             requestAcceptedFromServer.setActivity(getActivity());
             requestAcceptedFromServer.setIdRequest(idRequest);
-            requestAcceptedFromServer.setIdUserPenyediaJasa("PENYEDIA_1481480127664");
+            requestAcceptedFromServer.setIdUserPenyediaJasa(idUser);
             requestAcceptedFromServer.setContext(getContext());
             try {
                 requestAcceptedFromServer.execute().get();
@@ -127,6 +177,8 @@ public class FragmentRequestActiveTask extends BaseFragment {
                             listService = serviceDao.queryBuilder().where().eq(Service.clm_id_service, requestAccepted.getFidService()).query();
                         } catch (SQLException e) {
                             e.printStackTrace();
+                        }finally {
+                            dbh.close();
                         }
 
                         for(Service service : listService){
@@ -147,8 +199,38 @@ public class FragmentRequestActiveTask extends BaseFragment {
                     }
                 }
             }
+        } else{
+            openDatabaseHelper();
+            try {
+                List<RequestAccepted> listReqAccp = requestAcceptedDao.queryBuilder()
+                                                    .where().eq(RequestAccepted.clm_status, "PROCESS").query();
+                if(listReqAccp.size()>0){
+                    requestAccepted = listReqAccp.get(0);
+
+                    List<Service> listService = serviceDao.queryBuilder().where().eq(Service.clm_id_service, requestAccepted.getFidService()).query();
 
 
+                    for(Service service : listService){
+                        textTitle.setText(service.getServiceName());
+                    }
+
+                    textUserName.setText(requestAccepted.getClientName());
+                    textNoTelp.setText(requestAccepted.getClientNoTelfon());
+                    if(requestAccepted.getStatus().equals("NEW")){
+                        isNew = true;
+                    }else{
+                        isNew = false;
+                    }
+                }
+
+                // get list request detail
+                data = requestDetailDao.queryForEq(RequestDetail.clm_fid_request, requestAccepted.getIdRequest());
+
+            } catch (SQLException e) {
+                Log.e("Select Error", e.toString());
+            }finally {
+                dbh.close();
+            }
         }
 //        if(data.isEmpty()){
 //            // load list view

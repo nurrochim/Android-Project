@@ -87,7 +87,10 @@ public class FragmentInsertAccount extends BaseFragment {
 
                     // validasi password
                     if(!isValidateError){
-                        if(!textPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
+                        if(textPassword.getText().toString().length()<5){
+                            isValidateError = true;
+                            createToast("Password minimal 6 character...");
+                        }else if(!textPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
                             isValidateError = true;
                             createToast("Password tidak sama...");
                         }

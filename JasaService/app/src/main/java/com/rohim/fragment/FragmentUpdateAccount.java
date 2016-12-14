@@ -115,7 +115,10 @@ public class FragmentUpdateAccount extends BaseFragment {
                     createToast("Current Password yang anda isi tidak sesuai");
                 }
                 // cek new password dan confirm password
-                if(!textNewPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
+                if(textNewPassword.getText().toString().length()<5){
+                    isErrorValidate = true;
+                    createToast("Password minimal 6 character...");
+                }else if(!textNewPassword.getText().toString().equals(textConfirmPassword.getText().toString())){
                     isErrorValidate = true;
                     createToast("New Password dan Confirm password tidak sama dengan ");
                 }

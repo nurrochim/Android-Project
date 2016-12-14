@@ -154,13 +154,48 @@ public class MainActivity extends AppCompatActivity
         // database init
         databaseInit();
 
+        // get intent extra for handle notification
+        if (getIntent().hasExtra("msgId")) {
+            String msgId = getIntent().getStringExtra("msgId");
+            if(msgId.equals("RO")){
+                if (getIntent().hasExtra("idRequest")) {
+                    FragmentRequestActiveTask activeTask= new FragmentRequestActiveTask();
+                    activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
+                    fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
+                }
+            }
+            if(msgId.equals("PROCESS")){
+                FragmentRequestOrderActive activeOrder= new FragmentRequestOrderActive();
+                activeOrder.setMsgId(msgId);
+                activeOrder.setIdRequest(getIntent().getStringExtra("idRequest"));
+                activeOrder.setIdUserAccepted(getIntent().getStringExtra("idUserAccepted"));
+                activeOrder.setUserNameAccepted(getIntent().getStringExtra("userNameAccepted"));
+                activeOrder.setUserNoTelp(getIntent().getStringExtra("userNoTelp"));
+                fragmentManager.beginTransaction().replace(R.id.content_main, activeOrder).commit();
+            }
+            if(msgId.equals("CANCEL1")){
+                FragmentRequestOrderActive activeOrder= new FragmentRequestOrderActive();
+                activeOrder.setMsgId(msgId);
+                activeOrder.setMsgTitle(getIntent().getStringExtra("msgTitle"));
+                activeOrder.setMsgBody(getIntent().getStringExtra("msgBody"));
+                activeOrder.setIdRequest(getIntent().getStringExtra("idRequest"));
+                activeOrder.setIdUserAccepted("");
+                activeOrder.setUserNameAccepted("Menunggu Process System");
+                activeOrder.setUserNoTelp("");
+                fragmentManager.beginTransaction().replace(R.id.content_main, activeOrder).commit();
+            }
+            if(msgId.equals("FINISH")){
+                FragmentRequestOrderActive activeOrder= new FragmentRequestOrderActive();
+                activeOrder.setMsgId(msgId);
+                activeOrder.setMsgTitle(getIntent().getStringExtra("msgTitle"));
+                activeOrder.setMsgBody(getIntent().getStringExtra("msgBody"));
+                activeOrder.setIdRequest(getIntent().getStringExtra("idRequest"));
+                fragmentManager.beginTransaction().replace(R.id.content_main, activeOrder).commit();
+            }
+        }
         // jika di buka dari Penyedia Jasa
         // jika ada New Task maka screen yang pertama muncul adalah Accept/Ignore
-        if (getIntent().hasExtra("idRequest")) {
-            FragmentRequestActiveTask activeTask= new FragmentRequestActiveTask();
-            activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
-            fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
-        }
+
 
     }
 

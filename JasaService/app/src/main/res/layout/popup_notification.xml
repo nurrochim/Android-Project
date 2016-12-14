@@ -8,7 +8,7 @@
     >
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30mm"
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:gravity="center"
@@ -26,7 +26,7 @@
         />
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="20px" />
+        android:layout_height="2mm" />
 
         <TextView
             android:id="@+id/text_notification"
@@ -54,14 +54,14 @@
                 <!--/>-->
             <Button android:text="Cancel"
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="8mm"
                 android:id="@+id/btn_back_popup"
                 android:layout_weight="0.5"
                 android:background="@drawable/shape_radius_layout"
                 />
             <Button android:text="Logout"
                 android:layout_width="match_parent"
-                android:layout_height="70px"
+                android:layout_height="8mm"
                 android:id="@+id/btn_logout_popup"
                 android:layout_weight="0.5"
                 android:background="@drawable/shape_radius_layout"

@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -40,14 +41,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-
         String notifTitleSplit[] = notification.getTitle().split("#");
         String notifTitle = notifTitleSplit[0];
+        intent.putExtra("msgId", notifTitle);
         String idRequest = "";
         if(notifTitle.equals("RO")){
             notifTitle = "New Task";
             idRequest = notifTitleSplit[1];
             intent.putExtra("idRequest", idRequest);
+        }
+
+        if(notifTitle.equals("PROCESS")){
+            notifTitle = "System Notification";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+            intent.putExtra("idUserAccepted", notifTitleSplit[2]);
+            intent.putExtra("userNameAccepted", notifTitleSplit[3]);
+            intent.putExtra("userNoTelp", notifTitleSplit[4]);
+        }
+
+        if(notifTitle.equals("CANCEL1")){
+            notifTitle = "System Replace Enginer";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
+        }
+
+        if(notifTitle.equals("FINISH")){
+            notifTitle = "Finish Service Confirmation";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
         }
 
 

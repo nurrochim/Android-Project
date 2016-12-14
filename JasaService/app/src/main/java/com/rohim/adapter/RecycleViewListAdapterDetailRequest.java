@@ -140,6 +140,9 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
                 dbh = new DatabaseHelper(context);
                 dropDownListDao = dbh.getDropDownListDao();
                 List<DropDownList> listDropDown = dropDownListDao.queryForEq(DropDownList.clm_fid_service_item, requestDetail.getFidServiceItem());
+                if(requestDetail.getSatuan()!=null && requestDetail.getSatuan().equals("REASON_COMENT")){
+                    listDropDown = dropDownListDao.queryForEq(DropDownList.clm_alias, requestDetail.getSatuan());
+                }
 
                 prompt = "Pilih " + requestDetail.getServiceItemName();
                 for(DropDownList dw: listDropDown){

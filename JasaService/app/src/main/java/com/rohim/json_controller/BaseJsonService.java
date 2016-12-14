@@ -12,6 +12,7 @@ public class BaseJsonService {
     public JsonParser jsonParser = new JsonParser();
     public String ipAddres = "";
     public static String URLWebService = "/JasaServiceWeb/rs/jasaService/";
+    public static String getConectionTest = "status";
     public static String getUserLogin = "getUser";
     public static String addUser = "postAddUser";
     public static String updateUser = "postUpdateUser";

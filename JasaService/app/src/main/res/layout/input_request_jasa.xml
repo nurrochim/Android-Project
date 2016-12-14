@@ -15,7 +15,7 @@
         >
         <Button android:text="Back"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="8mm"
             android:id="@+id/btn_back_input_request"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"
@@ -24,7 +24,7 @@
 
         <Button android:text="Submit"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="8mm"
             android:id="@+id/btn_submit_input_request"
             android:layout_weight="0.5"
             android:background="@drawable/shape_radius_layout"

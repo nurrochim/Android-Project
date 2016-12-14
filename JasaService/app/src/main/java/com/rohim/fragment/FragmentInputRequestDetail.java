@@ -129,8 +129,8 @@ public class FragmentInputRequestDetail extends BaseFragment {
                 ro.setFidUserCreate(idUser);
                 ro.setStatus("NEW");
                 ro.setFidService(idService);
-                //ro.setUserName(user.getUserName());
-                //ro.setUserNoTelfon(user.getNoTelp());
+                ro.setUserName("Menunggu Process System");
+                ro.setUserNoTelfon("");
                 ro.setCreateDate(new Date());
                // requestOrderDao.create(ro);
 

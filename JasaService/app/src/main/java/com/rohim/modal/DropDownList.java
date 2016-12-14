@@ -36,6 +36,11 @@ public class DropDownList extends BaseDaoEnabled implements Serializable {
         this.description = description;
     }
 
+    public DropDownList(String alias, String description) {
+        this.alias = alias;
+        this.description = description;
+    }
+
     public Integer getIdDropDown() {
         return idDropDown;
     }
