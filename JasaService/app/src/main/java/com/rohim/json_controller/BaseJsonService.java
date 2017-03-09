@@ -23,6 +23,10 @@ public class BaseJsonService {
     public static String postAcceptedRequestTask = "postAcceptedRequestTask";
     public static String postIgnoreRequestTask = "postIgnoreRequestTask";
     public static String postFinishRequestTask = "postFinishRequestTask";
+    public static String postCancelRequestTask = "postCancelRequestTask";
+    public static String postCancelRequestOrder = "postCancelRequestOrder";
+    public static String postComentarClient = "postComentarClient";
+    public static String getServiceProvide = "getServiceProvide";
 
 
     public Gson gson = new Gson();

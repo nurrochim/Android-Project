@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ public class IgnoreRequestTaskToServer extends AsyncTask<Void, Void, Void>{
     String ipServer;
     Context context;
     String idRequest, idUserCreate, idUserAccept, respon;
+    FragmentManager fragmentManager;
+    Button btnAcceptFinish, btnIgnoreCancel;
 
     public String getIdRequest() {
         return idRequest;
@@ -75,6 +79,30 @@ public class IgnoreRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         this.context = context;
     }
 
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
+    }
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    public Button getBtnAcceptFinish() {
+        return btnAcceptFinish;
+    }
+
+    public void setBtnAcceptFinish(Button btnAcceptFinish) {
+        this.btnAcceptFinish = btnAcceptFinish;
+    }
+
+    public Button getBtnIgnoreCancel() {
+        return btnIgnoreCancel;
+    }
+
+    public void setBtnIgnoreCancel(Button btnIgnoreCancel) {
+        this.btnIgnoreCancel = btnIgnoreCancel;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -108,11 +136,14 @@ public class IgnoreRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         Toast toast;
 
         if(respon.equalsIgnoreCase("Succes")){
+//            btnAcceptFinish.setVisibility(View.GONE);
+//            btnIgnoreCancel.setVisibility(View.GONE);
             textToast = "Succes Synchronize";
             toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
             if( textView != null) textView.setGravity(Gravity.CENTER);
             toast.show();
+
         }else{
             textToast = "Maaf... Sepertinya ada masalah \n kami akan memperbaikinya segera";
             toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);

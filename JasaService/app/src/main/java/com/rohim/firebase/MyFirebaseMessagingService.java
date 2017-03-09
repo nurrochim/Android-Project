@@ -45,10 +45,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String notifTitle = notifTitleSplit[0];
         intent.putExtra("msgId", notifTitle);
         String idRequest = "";
+
+        if(notifTitle.equals("Konfirmasi Pendaftaran")){
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
+        }
+
         if(notifTitle.equals("RO")){
             notifTitle = "New Task";
             idRequest = notifTitleSplit[1];
             intent.putExtra("idRequest", idRequest);
+            intent.putExtra("idUserAccepted", notifTitleSplit[2]);
         }
 
         if(notifTitle.equals("PROCESS")){
@@ -58,6 +65,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("idUserAccepted", notifTitleSplit[2]);
             intent.putExtra("userNameAccepted", notifTitleSplit[3]);
             intent.putExtra("userNoTelp", notifTitleSplit[4]);
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
         }
 
         if(notifTitle.equals("CANCEL1")){
@@ -68,12 +77,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("msgBody", notification.getBody());
         }
 
-        if(notifTitle.equals("FINISH")){
-            notifTitle = "Finish Service Confirmation";
+        if(notifTitle.equals("CANCEL2")){
+            notifTitle = "Cancel By Client";
             idRequest = notifTitleSplit[1];
             intent.putExtra("idRequest", idRequest);
             intent.putExtra("msgTitle", notifTitle);
             intent.putExtra("msgBody", notification.getBody());
+        }
+
+        if(notifTitle.equals("FINISH")){
+            notifTitle = notifTitleSplit[2]+" Telah Selesai";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
+        }
+
+        if(notifTitle.equals("COMMENT")){
+            notifTitle = "Ulasan Client";
+            idRequest = notifTitleSplit[1];
+            intent.putExtra("idRequest", idRequest);
+            intent.putExtra("msgTitle", notifTitle);
+            intent.putExtra("msgBody", notification.getBody());
+            intent.putExtra("msgUlasan", notifTitleSplit[2]);
+            intent.putExtra("msgComent", notifTitleSplit[3]);
         }
 
 

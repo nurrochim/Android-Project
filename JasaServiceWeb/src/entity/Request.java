@@ -52,7 +52,8 @@ public class Request {
     	this.status = ro.getStatus();
     	this.startTime = ro.getStartTime();
     	this.createDate = new Date();
-    	
+    	this.longitude = ro.getLongitude();
+    	this.latitude = ro.getLatitude();
     }
 
     public String getIdRequest() {

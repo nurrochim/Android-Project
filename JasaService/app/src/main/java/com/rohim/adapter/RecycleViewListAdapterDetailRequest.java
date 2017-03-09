@@ -1,10 +1,14 @@
 package com.rohim.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +43,14 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
     public Dao<DropDownList, Integer> dropDownListDao = null;
     public DatabaseHelper dbh ;
     boolean enabled;
+    Activity activity;
 
-    public RecycleViewListAdapterDetailRequest(Context context, List<RequestDetail> listData, FragmentManager fragmentManager, boolean enabled) {
+    public RecycleViewListAdapterDetailRequest(Context context, List<RequestDetail> listData, FragmentManager fragmentManager, boolean enabled, Activity activity) {
         this.context = context;
         this.listData = listData;
         this.fragmentManager = fragmentManager;
         this.enabled = enabled;
+        this.activity = activity;
     }
     @Override
     public MyViewHolderItemRequest onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,7 +64,12 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
         RequestDetail requestDetail = listData.get(position);
         holder.textItemDetail.setText(requestDetail.getServiceItemName());
         holder.textItemValue.setText(requestDetail.getServiceItemValue());
-        holder.textSatuan.setText(requestDetail.getSatuan());
+        if(requestDetail.getSatuan()!= null && requestDetail.getSatuan().equals("REASON_COMENT")){
+            holder.textSatuan.setText("");
+        }else{
+            holder.textSatuan.setText(requestDetail.getSatuan());
+        }
+
         holder.requestDetail = requestDetail;
         if(requestDetail.getJenisInput().equals(EnumInputService.Map.getVal())){
             SharedPreferences prefs = context.getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
@@ -111,6 +122,18 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
                             fragmentTrans.addToBackStack(null).commit();
                         }
                     }
+                    if(enabled) {
+                        if (requestDetail.getJenisInput().equals(EnumInputService.Map.getVal())) {
+                            SharedPreferences sharedPreference = context.getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE);
+                            String latitude = sharedPreference.getString("latitude","");
+                            String longitude = sharedPreference.getString("longitude","");
+
+                            Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?q="+ latitude  +"," + longitude +"("+ "Client Location" + ")");
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            //mapIntent.setPackage("com.google.android.apps.maps");
+                            activity.startActivity(mapIntent);
+                        }
+                    }
                 }
             });
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -149,7 +172,7 @@ public class RecycleViewListAdapterDetailRequest extends RecyclerView.Adapter<Re
                     spinnerData.add(dw.getDescription());
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
 
             spinner.setPrompt(prompt);

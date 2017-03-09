@@ -6,24 +6,23 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rohim.json_controller.JsonServiceOrder;
 import com.rohim.json_controller.JsonServiceRequestAccept;
 
 /**
  * Created by Asus on 10/12/2016.
  */
 
-public class FinishRequestTaskToServer extends AsyncTask<Void, Void, Void>{
+public class CancelRequestOrderToServer extends AsyncTask<Void, Void, Void>{
     private View view;
     ProgressDialog mProgressDialog;
     Activity activity;
     String ipServer;
     Context context;
-    String idRequest, idUserCreate, idUserAccept, respon;
-    Button btnAcceptFinish, btnIgnoreCancel;
+    String idRequest, idUserCreate, idUserAccept, respon, reason;
 
     public String getIdRequest() {
         return idRequest;
@@ -77,20 +76,20 @@ public class FinishRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         this.context = context;
     }
 
-    public Button getBtnAcceptFinish() {
-        return btnAcceptFinish;
+    public String getRespon() {
+        return respon;
     }
 
-    public void setBtnAcceptFinish(Button btnAcceptFinish) {
-        this.btnAcceptFinish = btnAcceptFinish;
+    public void setRespon(String respon) {
+        this.respon = respon;
     }
 
-    public Button getBtnIgnoreCancel() {
-        return btnIgnoreCancel;
+    public String getReason() {
+        return reason;
     }
 
-    public void setBtnIgnoreCancel(Button btnIgnoreCancel) {
-        this.btnIgnoreCancel = btnIgnoreCancel;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @Override
@@ -110,10 +109,10 @@ public class FinishRequestTaskToServer extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
         // get from JSON
-        JsonServiceRequestAccept jsonServiceRequestAccept = new JsonServiceRequestAccept();
-        jsonServiceRequestAccept.setIpAddres(ipServer);
-
-        respon = jsonServiceRequestAccept.finishRequest(idRequest, idUserAccept);
+        JsonServiceOrder jsonService = new JsonServiceOrder();
+        jsonService.setIpAddres(ipServer);
+        reason = reason.replace(" ","_");
+        respon = jsonService.cancelServiceOrder(idRequest, idUserCreate, reason);
 
         return null;
     }
@@ -126,8 +125,6 @@ public class FinishRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         Toast toast;
 
         if(respon.equalsIgnoreCase("Succes")){
-            btnAcceptFinish.setVisibility(View.GONE);
-            btnIgnoreCancel.setVisibility(View.GONE);
             textToast = "Succes Synchronize";
             toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);

@@ -33,6 +33,8 @@ public class RequestOrder {
     Date createDate;
     String finishCommentUser;
     String hasilService;
+    String longitude;
+    String latitude;
 
     public RequestOrder() {
     }
@@ -132,4 +134,22 @@ public class RequestOrder {
     public void setFinishCommentUser(String finishCommentUser) {
         this.finishCommentUser = finishCommentUser;
     }
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+    
+    
 }

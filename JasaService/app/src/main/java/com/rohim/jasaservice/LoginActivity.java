@@ -53,8 +53,8 @@ public class LoginActivity extends Activity{
         editorSharedPreference = sh.edit();
         final String ipServer = sh.getString("IpAddress","");
 
-        textEmail.setText("c@n.dra");
-        textPassword.setText("c");
+//        textEmail.setText("c@n.dra");
+//        textPassword.setText("candra");
 
         // create conection db
         dbh = new DatabaseHelper(getApplicationContext());

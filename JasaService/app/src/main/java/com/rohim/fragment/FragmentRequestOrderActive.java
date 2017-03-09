@@ -1,28 +1,45 @@
 package com.rohim.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.rohim.adapter.NothingSelectedSpinnerAdapter;
 import com.rohim.adapter.RecycleViewListAdapterDetailRequest;
+import com.rohim.asyncTaskServer.AddCommentServiceOrder;
+import com.rohim.asyncTaskServer.CancelRequestOrderToServer;
 import com.rohim.common.BaseFragment;
+import com.rohim.common.DatabaseHelper;
 import com.rohim.common.PopupNotification;
 import com.rohim.enumeration.EnumInputService;
 import com.rohim.jasaservice.MainActivity;
 import com.rohim.jasaservice.R;
+import com.rohim.modal.DropDownList;
 import com.rohim.modal.RequestDetail;
 import com.rohim.modal.RequestOrder;
 import com.rohim.modal.Service;
 import com.rohim.modal.ServiceItem;
+import com.rohim.modal.ServiceProvide;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,7 +53,11 @@ public class FragmentRequestOrderActive extends BaseFragment {
     private RecycleViewListAdapterDetailRequest adapterListView;
     Button btnBack, btnCancel;
     TextView textTitle, textUserName, textNoTelp;
-    String idRequest, idUserAccepted, userNameAccepted, userNoTelp, msgId, msgTitle, msgBody;
+    String idRequest, idUserAccepted, userNameAccepted, userNoTelp, msgId, msgTitle, msgBody, reasonCancel;
+    RequestOrder requestOrder;
+    Spinner spinner;
+    boolean isFinish = false;
+    RelativeLayout profil;
 
     @Override
     public void initView() {
@@ -47,6 +68,13 @@ public class FragmentRequestOrderActive extends BaseFragment {
         textNoTelp = (TextView) view.findViewById(R.id.text_no_telp_request_order);
         btnCancel = (Button) view.findViewById(R.id.btn_cancel_request_order);
         btnBack = (Button) view.findViewById(R.id.btn_back_request_order);
+        btnBack.setVisibility(View.INVISIBLE);
+        spinner = (Spinner) view.findViewById(R.id.spinner_item);
+        profil = (RelativeLayout) view.findViewById(R.id.layout_profil_penyedia_jasa);
+        textNoTelp.setPaintFlags(textNoTelp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        loadSpinnerCancel();
+
         if(msgId!=null){
             notifMode();
         }
@@ -54,25 +82,77 @@ public class FragmentRequestOrderActive extends BaseFragment {
 //        textUserName.setText("Ahmad Sobirin \nProfesional "+textTitle.getText().toString());
 //        textNoTelp.setText("No. Telp : 0856752318998");
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getItemAtPosition(position)!=null) {
+                    reasonCancel = parent.getItemAtPosition(position).toString();
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Cancel Order")
+                            .setMessage("Anda yakin akan \"CANCEL\" request order "+textTitle.getText().toString()+" ?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    doCancelOrder();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(btnCancel.getText().toString().equalsIgnoreCase("Cancel")){
-                    // do synchronize server
-
-                    // do delete data from device
-                    db = dbh.getWritableDatabase();
-                    String sql = "DELETE FROM "+RequestOrder.tbl_request_order;
-                    db.execSQL(sql);
-                    sql = "DELETE FROM "+RequestDetail.tbl_request_detail;
-                    db.execSQL(sql);
-                    db.close();
+                    spinner.performClick();
                 }else{
-                    // do submit comment
+                    // save to db local
+                    for(RequestDetail rd : data){
+                        if(rd.getServiceItemName().equals("Hasil Service")){
+                            requestOrder.setHasilService(rd.getServiceItemValue());
+                        }
+                        if(rd.getServiceItemName().equals("Ulasan")){
+                            requestOrder.setFinishCommentUser(rd.getServiceItemValue());
+                        }
+                    }
+                    openDatabaseHelper();
+                    try {
+                        requestOrderDao.update(requestOrder);
+                    } catch (SQLException e) {
+                        Log.e("Error", e.toString());
+                    } finally {
+                        dbh.close();
+                    }
 
+                    // do submit to server
+                    AddCommentServiceOrder serviceServer = new AddCommentServiceOrder();
+                    serviceServer.setIpServer(ipServer);
+                    serviceServer.setActivity(getActivity());
+                    serviceServer.setContext(getContext());
+                    serviceServer.setRequestOrder(requestOrder);
+                    serviceServer.execute();
                 }
 
+            }
+        });
+
+        profil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(requestOrder!=null && requestOrder.getUserNoTelfon()!=null && !requestOrder.getUserNoTelfon().isEmpty()){
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+
+                    intent.setData(Uri.parse("tel:" + requestOrder.getUserNoTelfon()));
+                    getContext().startActivity(intent);
+                }
             }
         });
 
@@ -93,17 +173,21 @@ public class FragmentRequestOrderActive extends BaseFragment {
                 ro.setUserName(userNameAccepted);
                 ro.setUserNoTelfon(userNoTelp);
                 requestOrderDao.update(ro);
+                PopupNotification popupNotification = new PopupNotification();
+                popupNotification.setParam(getContext(), msgTitle, msgBody, false);
+                popupNotification.show(getFragmentManager(), "");
 
             }
             if(msgId.equals("FINISH")){
                 RequestOrder ro = requestOrderDao.queryForId(idRequest);
                 ro.setStatus(msgId);
                 requestOrderDao.update(ro);
-
+                PopupNotification popupNotification = new PopupNotification();
+                popupNotification.setParam(getContext(), msgTitle, msgBody, false);
+                popupNotification.show(getFragmentManager(), "");
+                isFinish = true;
             }
-            PopupNotification popupNotification = new PopupNotification();
-            popupNotification.setParam(getContext(), msgTitle, msgBody, false);
-            popupNotification.show(getFragmentManager(), "");
+
 
         } catch (SQLException e) {
             Log.e("Error", e.toString());
@@ -113,62 +197,48 @@ public class FragmentRequestOrderActive extends BaseFragment {
     }
 
     private void loadInit() {
-        if(data.isEmpty()){
+        if(data.isEmpty() && !isFinish){
             // load list view
             try {
-                // select query
-                String sql = "SELECT "
-                        +"B."+RequestDetail.clm_id_request_detail
-                        +",B."+RequestDetail.clm_fid_request
-                        +",B."+RequestDetail.clm_fid_service_item
-                        +",B."+RequestDetail.clm_service_item_name
-                        +",B."+RequestDetail.clm_service_item_value
-                        +",B."+RequestDetail.clm_jenis_input
-                        +",B."+RequestDetail.clm_satuan
-                        +",C."+Service.clm_service_name
-                        +",A."+RequestOrder.clm_user_name
-                        +",A."+RequestOrder.clm_user_no_telfon
-                        +" FROM "+ RequestOrder.tbl_request_order +" A LEFT JOIN "+ RequestDetail.tbl_request_detail+" B "
-                        +" ON A."+RequestOrder.clm_id_request+" = B."+RequestDetail.clm_fid_request
-                        +" LEFT JOIN "+ Service.tbl_service+" C ON A.FID_SERVICE = C.ID_SERVICE"
-                        +" AND A."+RequestOrder.clm_status+" IN ('NEW', 'PROCESS', 'CANCEL1') ORDER BY B."+RequestDetail.clm_id_request_detail+" ASC";
-                // get db conection
-                db = dbh.getWritableDatabase();
-                cursor = db.rawQuery(sql, null);
+                openDatabaseHelper();
+                List<String> statusIn = new ArrayList<>();
+                statusIn.add("NEW");
+                statusIn.add("PROCESS");
+                statusIn.add("CANCEL1");
+                List<RequestOrder> listRo = requestOrderDao.queryBuilder().orderBy(RequestOrder.clm_id_request, false).where().in(RequestOrder.clm_status, statusIn).query();
+                if(listRo.size()>0){
+                    requestOrder = listRo.get(0);
+                    textUserName.setText(requestOrder.getUserName());
+                    textNoTelp.setText("No. Telp : "+requestOrder.getUserNoTelfon());
+                }
 
+                if(requestOrder!=null){
+                    Service service = serviceDao.queryForId(requestOrder.getFidService());
+                    textTitle.setText(service.getServiceName());
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        RequestDetail rd = new RequestDetail();
-                        rd.setIdRequestDetail(cursor.getString(0));
-                        rd.setFidRequest(cursor.getString(1));
-                        rd.setFidServiceItem(cursor.getInt(2));
-                        rd.setServiceItemName(cursor.getString(3));
-                        rd.setServiceItemValue(cursor.getString(4));
-                        rd.setJenisInput(cursor.getString(5));
-                        rd.setSatuan(cursor.getString(6));
-                        textTitle.setText(cursor.getString(7));
-                        textUserName.setText(cursor.getString(8));
-                        textNoTelp.setText(cursor.getString(9));
-                        data.add(rd);
-                    } while (cursor.moveToNext());
+                    data = requestDetailDao.queryBuilder().where().eq(RequestDetail.clm_fid_request, requestOrder.getIdRequest()).query();
+                }else{
+                    PopupNotification popupNotification = new PopupNotification();
+                    popupNotification.setParam(getContext(), "Active Order", "Saat ini sedang tidak ada data", false);
+                    popupNotification.show(getFragmentManager(), "");
+                    btnBack.setVisibility(View.GONE);
+                    btnCancel.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
                 Log.e("Error", e.toString());
             }finally {
-                cursor.close();
-                db.close();
+                dbh.close();
             }
         }
 
         if(msgId!=null && msgId.equals("FINISH")){
             openDatabaseHelper();
             try {
-                RequestOrder ro = requestOrderDao.queryForId(idRequest);
-                Service service = serviceDao.queryForId(ro.getFidService());
+                requestOrder = requestOrderDao.queryForId(idRequest);
+                Service service = serviceDao.queryForId(requestOrder.getFidService());
                 textTitle.setText(service.getServiceName());
-                textUserName.setText(ro.getUserName());
-                textNoTelp.setText(ro.getUserNoTelfon());
+                textUserName.setText(requestOrder.getUserName());
+                textNoTelp.setText("No. Telp : "+requestOrder.getUserNoTelfon());
 
                 data.clear();
                 RequestDetail rd1 = new RequestDetail();
@@ -182,7 +252,6 @@ public class FragmentRequestOrderActive extends BaseFragment {
 
                 data.add(rd1);
                 data.add(rd2);
-                adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, false);
 
                 btnCancel.setText("SUBMIT");
                 btnBack.setVisibility(View.INVISIBLE);
@@ -198,8 +267,52 @@ public class FragmentRequestOrderActive extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, true);
+        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, !isFinish, getActivity());
         listview.setAdapter(adapterListView);
+    }
+
+    private void loadSpinnerCancel(){
+        List<String> spinnerData = new ArrayList<>();
+        CharSequence prompt = "";
+        try {
+            openDatabaseHelper();
+            dropDownListDao = dbh.getDropDownListDao();
+            List<DropDownList> listDropDown = dropDownListDao.queryForEq(DropDownList.clm_alias, "REASON_CANCEL2");
+
+            prompt = "Pilih Alasan Cancel";
+            for(DropDownList dw: listDropDown){
+                spinnerData.add(dw.getDescription());
+            }
+        } catch (SQLException e) {
+            Log.e("Error", e.toString());
+        }
+
+        spinner.setPrompt(prompt);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerData);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinner.setAdapter(new NothingSelectedSpinnerAdapter(adapter,R.layout.spinner_not_selected,getContext()));
+    }
+
+    private void doCancelOrder(){
+        // do synchronize server
+        CancelRequestOrderToServer serviceServer = new CancelRequestOrderToServer();
+        serviceServer.setIpServer(ipServer);
+        serviceServer.setActivity(getActivity());
+        serviceServer.setContext(getContext());
+        serviceServer.setIdRequest(requestOrder.getIdRequest());
+        serviceServer.setIdUserCreate(requestOrder.getFidUserCreate());
+        serviceServer.setReason(reasonCancel);
+        serviceServer.execute();
+
+        openDatabaseHelper();
+        try {
+            requestOrder.setStatus("CANCEL2");
+            requestOrderDao.update(requestOrder);
+        } catch (SQLException e) {
+            Log.e("Error", e.toString());
+        } finally {
+            dbh.close();
+        }
     }
 
     public String getIdRequest() {

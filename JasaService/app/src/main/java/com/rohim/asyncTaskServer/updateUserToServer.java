@@ -103,18 +103,20 @@ public class updateUserToServer extends AsyncTask<Void, Void, Void>{
         CharSequence textToast = "";
         Toast toast;
 
-        if(respon.equalsIgnoreCase("Succes")){
-            textToast = "UPDATE "+update+" BERHASIL";
-            toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);
-            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
-            if( textView != null) textView.setGravity(Gravity.CENTER);
-            toast.show();
-        }else{
-            textToast = "MAAF.. UPDATE "+update+" GAGAL...  \n SERVER SEDANG SIBUK";
-            toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);
-            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
-            if( textView != null) textView.setGravity(Gravity.CENTER);
-            toast.show();
+        if(!update.equals("TOKEN")) {
+            if (respon.equalsIgnoreCase("Succes")) {
+                textToast = "UPDATE " + update + " BERHASIL";
+                toast = Toast.makeText(context, textToast, Toast.LENGTH_SHORT);
+                TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (textView != null) textView.setGravity(Gravity.CENTER);
+                toast.show();
+            } else {
+                textToast = "MAAF.. UPDATE " + update + " GAGAL...  \n SERVER SEDANG SIBUK";
+                toast = Toast.makeText(context, textToast, Toast.LENGTH_SHORT);
+                TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (textView != null) textView.setGravity(Gravity.CENTER);
+                toast.show();
+            }
         }
 
     }

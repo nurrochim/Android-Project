@@ -27,6 +27,7 @@ import com.rohim.jasaservice.R;
 import com.rohim.modal.RequestAccepted;
 import com.rohim.modal.RequestDetail;
 import com.rohim.modal.RequestOrder;
+import com.rohim.modal.ServiceProvide;
 import com.rohim.modal.User;
 
 /**
@@ -99,9 +100,10 @@ public class PopupNotification extends DialogFragment{
         try {
 
             db.execSQL("DELETE FROM "+ User.tbl_user);
-            db.execSQL("DELETE FROM "+ RequestOrder.tbl_request_order);
-            db.execSQL("DELETE FROM "+ RequestAccepted.tbl_request_accepted);
-            db.execSQL("DELETE FROM "+ RequestDetail.tbl_request_detail);
+//            db.execSQL("DELETE FROM "+ RequestOrder.tbl_request_order);
+//            db.execSQL("DELETE FROM "+ RequestAccepted.tbl_request_accepted);
+//            db.execSQL("DELETE FROM "+ RequestDetail.tbl_request_detail);
+            db.execSQL("DELETE FROM "+ ServiceProvide.tbl_service_provice);
 
             // open fragmant before login
             openFragment(new FragmentBeforeLogin(), "Jasa Service", false);

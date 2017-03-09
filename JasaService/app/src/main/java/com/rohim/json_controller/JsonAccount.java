@@ -75,4 +75,8 @@ public class JsonAccount extends BaseJsonService{
         String respon = jsonParser.setPost(getFullPathService()+updateUser, user);
         return respon;
     }
+    public String getServiceProvide(String idUser){
+        String respon = jsonParser.getJSONFromUrl(getFullPathService()+getServiceProvide+"?idUser="+idUser, null);
+        return respon;
+    }
 }

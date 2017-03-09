@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class CancelRequestTaskToServer extends AsyncTask<Void, Void, Void>{
     String ipServer;
     Context context;
     String idRequest, idUserCreate, idUserAccept, respon, reason;
+    Button btnAcceptFinish, btnIgnoreCancel;
 
     public String getIdRequest() {
         return idRequest;
@@ -91,6 +93,22 @@ public class CancelRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         this.reason = reason;
     }
 
+    public Button getBtnAcceptFinish() {
+        return btnAcceptFinish;
+    }
+
+    public void setBtnAcceptFinish(Button btnAcceptFinish) {
+        this.btnAcceptFinish = btnAcceptFinish;
+    }
+
+    public Button getBtnIgnoreCancel() {
+        return btnIgnoreCancel;
+    }
+
+    public void setBtnIgnoreCancel(Button btnIgnoreCancel) {
+        this.btnIgnoreCancel = btnIgnoreCancel;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -110,7 +128,7 @@ public class CancelRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         // get from JSON
         JsonServiceRequestAccept jsonServiceRequestAccept = new JsonServiceRequestAccept();
         jsonServiceRequestAccept.setIpAddres(ipServer);
-
+        reason = reason.replace(" ", "_");
         respon = jsonServiceRequestAccept.cancelRequest(idRequest, idUserAccept, idUserCreate, reason);
 
         return null;
@@ -124,6 +142,8 @@ public class CancelRequestTaskToServer extends AsyncTask<Void, Void, Void>{
         Toast toast;
 
         if(respon.equalsIgnoreCase("Succes")){
+//            btnAcceptFinish.setVisibility(View.GONE);
+//            btnIgnoreCancel.setVisibility(View.GONE);
             textToast = "Succes Synchronize";
             toast = Toast.makeText(context,textToast, Toast.LENGTH_SHORT);
             TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);

@@ -16,6 +16,7 @@ public class ServiceProvide {
     public static final String clm_status = "STATUS";
     public static final String clm_description = "DESCRIPTION";
     public static final String clm_pengalaman = "PENGALAMAN";
+    public static final String clm_fid_user = "FID_USER";
 
     @DatabaseField(id = true, columnName = clm_id_service_provide)
     String idServiceProvide;
@@ -29,18 +30,21 @@ public class ServiceProvide {
     String status;
     @DatabaseField(columnName = clm_pengalaman)
     String pengalaman;
+    @DatabaseField(columnName = clm_fid_user)
+    String fidUser;
 
     public ServiceProvide(){
 
     }
 
-    public ServiceProvide(String idServiceProvide, String fidService, String serviceName, String description, String status, String pengalaman) {
+    public ServiceProvide(String idServiceProvide, String fidService, String serviceName, String description, String status, String pengalaman, String fidUser) {
         this.idServiceProvide = idServiceProvide;
         this.fidService = fidService;
         this.serviceName = serviceName;
         this.description = description;
         this.status = status;
         this.pengalaman = pengalaman;
+        this.fidUser = fidUser;
     }
 
     public String getIdServiceProvide() {
@@ -89,5 +93,13 @@ public class ServiceProvide {
 
     public void setPengalaman(String pengalaman) {
         this.pengalaman = pengalaman;
+    }
+
+    public String getFidUser() {
+        return fidUser;
+    }
+
+    public void setFidUser(String fidUser) {
+        this.fidUser = fidUser;
     }
 }

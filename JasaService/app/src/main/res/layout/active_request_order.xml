@@ -93,10 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/layout_image_profil">
+            android:layout_toEndOf="@+id/layout_image_profil"
+            android:layout_marginLeft="3mm">
             <TextView
                 android:id="@+id/text_user_name_request_order"
                 android:layout_width="wrap_content"
@@ -105,19 +105,24 @@
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:gravity="center"
                 />
 
             <TextView
                 android:id="@+id/text_no_telp_request_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No.Tlp : 087823114324"
-                android:textColor="@color/black"
+                android:text="No.Tlp :              "
+                android:textColor="@color/linkFacility"
                 android:textSize="17sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                />
         </LinearLayout>
     </RelativeLayout>
-
+    <Spinner
+        android:id="@+id/spinner_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:visibility="invisible"></Spinner>
 
 </RelativeLayout>

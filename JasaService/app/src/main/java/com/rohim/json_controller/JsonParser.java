@@ -157,4 +157,41 @@ public class JsonParser {
         }
         return json;
     }
+
+    public String postFromUrl(String url) {
+        // Making HTTP request
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        try {
+
+            // defaultHttpClient
+
+            HttpPost httpPost = new HttpPost(url);
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            is.close();
+            json = sb.toString();
+            Log.e("JSON", json);
+
+        } catch (UnsupportedEncodingException e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        } catch (ClientProtocolException e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        } catch (IOException e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }  catch (Exception e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }finally {
+            httpClient.getConnectionManager().shutdown();
+        }
+        return json;
+    }
 }

@@ -26,12 +26,12 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.rohim.common.DatabaseHelper;
+import com.rohim.common.PopupNotification;
 import com.rohim.fragment.AddTriggerJasaService;
 import com.rohim.fragment.BeforeLoginNotification;
 import com.rohim.fragment.FragmentBeforeLogin;
 import com.rohim.fragment.FragmentHistory;
 import com.rohim.fragment.FragmentInsertAccount;
-import com.rohim.fragment.FragmentLogout;
 import com.rohim.fragment.FragmentMenuJasaService;
 import com.rohim.fragment.FragmentRequestActiveTask;
 import com.rohim.fragment.FragmentRequestOrderActive;
@@ -157,10 +157,17 @@ public class MainActivity extends AppCompatActivity
         // get intent extra for handle notification
         if (getIntent().hasExtra("msgId")) {
             String msgId = getIntent().getStringExtra("msgId");
+            if(msgId.equals("Konfirmasi Pendaftaran")){
+                PopupNotification popupNotification = new PopupNotification();
+                popupNotification.setParam(getApplicationContext(), getIntent().getStringExtra("msgTitle"),getIntent().getStringExtra("msgBody"), false);
+                popupNotification.show(fragmentManager, "");
+            }
             if(msgId.equals("RO")){
                 if (getIntent().hasExtra("idRequest")) {
                     FragmentRequestActiveTask activeTask= new FragmentRequestActiveTask();
+                    activeTask.setMsgId(msgId);
                     activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
+                    activeTask.setIdUserAccepted(getIntent().getStringExtra("idUserAccepted"));
                     fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
                 }
             }
@@ -171,6 +178,8 @@ public class MainActivity extends AppCompatActivity
                 activeOrder.setIdUserAccepted(getIntent().getStringExtra("idUserAccepted"));
                 activeOrder.setUserNameAccepted(getIntent().getStringExtra("userNameAccepted"));
                 activeOrder.setUserNoTelp(getIntent().getStringExtra("userNoTelp"));
+                activeOrder.setMsgTitle(getIntent().getStringExtra("msgTitle"));
+                activeOrder.setMsgBody(getIntent().getStringExtra("msgBody"));
                 fragmentManager.beginTransaction().replace(R.id.content_main, activeOrder).commit();
             }
             if(msgId.equals("CANCEL1")){
@@ -191,6 +200,24 @@ public class MainActivity extends AppCompatActivity
                 activeOrder.setMsgBody(getIntent().getStringExtra("msgBody"));
                 activeOrder.setIdRequest(getIntent().getStringExtra("idRequest"));
                 fragmentManager.beginTransaction().replace(R.id.content_main, activeOrder).commit();
+            }
+            if(msgId.equals("CANCEL2")){
+                FragmentRequestActiveTask activeTask = new FragmentRequestActiveTask();
+                activeTask.setMsgId(msgId);
+                activeTask.setMsgTitle(getIntent().getStringExtra("msgTitle"));
+                activeTask.setMsgBody(getIntent().getStringExtra("msgBody"));
+                activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
+                fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
+            }
+            if(msgId.equals("COMMENT")){
+                FragmentRequestActiveTask activeTask = new FragmentRequestActiveTask();
+                activeTask.setMsgId(msgId);
+                activeTask.setMsgTitle(getIntent().getStringExtra("msgTitle"));
+                activeTask.setMsgBody(getIntent().getStringExtra("msgBody"));
+                activeTask.setIdRequest(getIntent().getStringExtra("idRequest"));
+                activeTask.setMsgHasilService(getIntent().getStringExtra("msgUlasan"));
+                activeTask.setMsgComment(getIntent().getStringExtra("msgComent"));
+                fragmentManager.beginTransaction().replace(R.id.content_main, activeTask).commit();
             }
         }
         // jika di buka dari Penyedia Jasa

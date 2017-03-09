@@ -24,6 +24,8 @@ public class RequestOrder {
     public static final String clm_create_date = "CREATE_DATE";
     public static final String clm_finish_comment_user = "FINISH_COMMENT_USER";
     public static final String clm_hasil_service = "HASIL_SERVICE";
+    public static final String clm_longitude = "LONGITUDE";
+    public static final String clm_latitude = "LATITUDE";
 
     @DatabaseField(id = true, columnName = clm_id_request)
     String idRequest;
@@ -49,6 +51,11 @@ public class RequestOrder {
     String finishCommentUser;
     @DatabaseField(columnName = clm_hasil_service)
     String hasilService;
+    @DatabaseField(columnName = clm_longitude)
+    String longitude;
+    @DatabaseField(columnName = clm_latitude)
+    String latitude;
+
 
     public RequestOrder() {
     }
@@ -148,4 +155,22 @@ public class RequestOrder {
     public void setFinishCommentUser(String finishCommentUser) {
         this.finishCommentUser = finishCommentUser;
     }
+
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
 }

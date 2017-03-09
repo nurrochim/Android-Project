@@ -101,7 +101,7 @@ public class FragmentInputRequestDetail extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, false);
+        adapterListView = new RecycleViewListAdapterDetailRequest(getContext(), data, fragmentManager, false, getActivity());
         listview.setAdapter(adapterListView);
     }
 
@@ -132,13 +132,26 @@ public class FragmentInputRequestDetail extends BaseFragment {
                 ro.setUserName("Menunggu Process System");
                 ro.setUserNoTelfon("");
                 ro.setCreateDate(new Date());
-               // requestOrderDao.create(ro);
+
+                // get latlng
+                String lat = getValueSharedPreference("latitude").toString();
+                String lng = getValueSharedPreference("longitude").toString();
+                ro.setLatitude(lat);
+                ro.setLongitude(lng);
+                requestOrderDao.create(ro);
 
                 // Save Request Detail
                 for (RequestDetail rqDet : data) {
+                    if(rqDet.getJenisInput().equals(EnumInputService.Map.getVal())  ){
+                        if(rqDet.getServiceItemValue()==null){
+                            rqDet.setServiceItemValue(getValueSharedPreference("Address").toString());
+                        }else if(!rqDet.getServiceItemValue().isEmpty()){
+                            rqDet.setServiceItemValue(getValueSharedPreference("Address").toString());
+                        }
+                    }
                     rqDet.setIdRequestDetail(idRequestOrder + "/Detail_" + dataDetail);
                     rqDet.setFidRequest(idRequestOrder);
-             //       requestDetailDao.create(rqDet);
+                    requestDetailDao.create(rqDet);
                     dataDetail++;
                 }
 

@@ -18,7 +18,7 @@ public class BeforeLoginNotification extends BaseFragment{
     public void initView() {
         view = inflater.inflate(R.layout.content_main, container, false);
         popupNotification = new PopupNotification();
-        isLogout = true;
+        //isLogout = true;
         if(isLogout){
             popupNotification.setParam(getContext(), title, "Semua data history anda akan terhapus \n Anda yakin akan keluar? ", isLogout);
         }else{

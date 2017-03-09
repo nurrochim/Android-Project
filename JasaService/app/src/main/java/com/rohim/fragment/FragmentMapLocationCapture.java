@@ -41,6 +41,8 @@ import com.rohim.common.BaseFragment;
 import com.rohim.common.FetchAddressIntentService;
 import com.rohim.jasaservice.R;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Nurochim on 22/10/2016.
  */
@@ -113,6 +115,12 @@ public class FragmentMapLocationCapture extends BaseFragment implements OnMapRea
             @Override
             public void onClick(View v) {
                 editorSharedPreference.putString("Address", mLocationAddress.getText().toString());
+
+                BigDecimal latit = new BigDecimal(mCenterLatLong.latitude);
+                BigDecimal longit = new BigDecimal(mCenterLatLong.longitude);
+                editorSharedPreference.putString("latitude", latit.toPlainString());
+                editorSharedPreference.putString("longitude",longit.toPlainString());
+
                 editorSharedPreference.commit();
                 try {
                     if (marker != null) {

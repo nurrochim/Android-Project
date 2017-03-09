@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.rohim.common.DatabaseHelper;
@@ -110,7 +111,7 @@ public class loginToServer extends AsyncTask<Void, Void, Void>{
 
         //setUserRespon(jsonAccount.getUserLogin(email,password));
         String json = jsonAccount.getUserService(email,password);
-        if(json!=null){
+        if(json!=null && !json.isEmpty()){
             String split[] = json.split("/");
             userRespon.put(split[0],split[1]);
         }
@@ -138,6 +139,10 @@ public class loginToServer extends AsyncTask<Void, Void, Void>{
             DatabaseHelper dbh = new DatabaseHelper(getActivity());
 
             try {
+                // get token for Firebase notification
+                String token = FirebaseInstanceId.getInstance().getToken();
+                user.setToken(token);
+
                 Dao<User, String> userDao = dbh.getUserDao();
                 userDao.create(user);
                 dbh.close();
@@ -145,6 +150,15 @@ public class loginToServer extends AsyncTask<Void, Void, Void>{
                 SharedPreferences.Editor editorSharedPreference = context.getSharedPreferences("ReUse_Variable", Context.MODE_PRIVATE).edit();;
                 editorSharedPreference.putString("IdUser", user.getIdUser());
                 editorSharedPreference.commit();
+
+                updateUserToServer updateUser = new updateUserToServer();
+                updateUser.setIpServer(ipServer);
+                updateUser.setActivity(getActivity());
+
+                updateUser.setUser(user);
+                updateUser.setContext(context);
+                updateUser.setUpdate("TOKEN");
+                updateUser.execute();
 
                 Intent intent = new Intent(context, MainActivity.class);
                 activity.startActivity(intent);

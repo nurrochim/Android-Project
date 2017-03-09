@@ -2,8 +2,10 @@ package com.rohim.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import com.j256.ormlite.dao.Dao;
 import com.rohim.adapter.NothingSelectedSpinnerAdapter;
 import com.rohim.adapter.RecycleViewListAdapter;
 import com.rohim.asyncTaskServer.addServiceProvidesToServer;
+import com.rohim.asyncTaskServer.getServiceProvideFromServer;
 import com.rohim.common.BaseFragment;
 import com.rohim.common.DatabaseHelper;
 import com.rohim.common.PopupNotification;
@@ -31,6 +34,7 @@ import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Nurochim on 07/10/2016.
@@ -94,6 +98,7 @@ public class AddTriggerJasaService extends BaseFragment{
 
         loadInit();
         refreshAdapter();
+        loadDataServiceProvideFromServer();
     }
 
     public void loadInit(){
@@ -133,7 +138,7 @@ public class AddTriggerJasaService extends BaseFragment{
                         item.setServiceName(selectedJasa);
                         item.setFidService(listService.get(position-1).getIdService());
                         item.setIdServiceProvide(idUser+"/"+item.getFidService()+"/"+selectedJasa);
-
+                        item.setFidUser(idUser);
                         // save data
                         openDatabaseHelper();
                         try {
@@ -165,7 +170,7 @@ public class AddTriggerJasaService extends BaseFragment{
         try {
             dbhStatic = new DatabaseHelper(activity);
             Dao<ServiceProvide, String>  staticServiceProvideDao = dbhStatic.getServiceProvideDao();
-            data = staticServiceProvideDao.queryBuilder().where().like(ServiceProvide.clm_id_service_provide,idUser+"%").query();
+            data = staticServiceProvideDao.queryBuilder().where().eq(ServiceProvide.clm_fid_user,idUser).query();
             adapterListView = new RecycleViewListAdapter(contexts, data, spinnerJasaService, activity, ipserver);
             listview.setAdapter(adapterListView);
         } catch (SQLException e) {
@@ -187,6 +192,36 @@ public class AddTriggerJasaService extends BaseFragment{
             dbh.close();
         }
         return listService;
+    }
+
+    private void loadDataServiceProvideFromServer(){
+        if(data.size()==0){
+            getServiceProvideFromServer service = new getServiceProvideFromServer();
+            service.setIpServer(ipServer);
+            service.setActivity(getActivity());
+            service.setIdUser(idUser);
+            service.setContext(getContext());
+            try {
+                service.execute().get();
+            } catch (InterruptedException e) {
+                Log.e("Error", e.toString());
+            } catch (ExecutionException e) {
+                Log.e("Error", e.toString());
+            }finally {
+                if(!service.getStatus().equals(AsyncTask.Status.FINISHED)){
+                    //data = service.getListServiceProvide();
+                    for(ServiceProvide serviceProvide:service.getListServiceProvide()){
+                        openDatabaseHelper();
+                        try {
+                            serviceProvideDao.create(serviceProvide);
+                        } catch (SQLException e) {
+                            Log.e("Error", e.toString());
+                        }
+                    }
+                    refreshAdapter();
+                }
+            }
+        }
     }
 //
 //    private void AddJasaServiceData(){
@@ -257,6 +292,7 @@ public class AddTriggerJasaService extends BaseFragment{
                 }
             }
         } catch (Exception e) {
+            Log.e("Error", e.toString());
         }
     }
 }

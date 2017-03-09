@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,14 +97,11 @@ public class RecycleViewListAdapterHistory extends RecyclerView.Adapter<RecycleV
         try {
             dbh = new DatabaseHelper(context);
             serviceDAO = dbh.getServiceDao();
-            List<Service> listService = serviceDAO.queryForEq(Service.clm_id_service, idService);
-
-            for(Service s: listService){
-                serviceName = s.getServiceName();
-            }
+            Service service = serviceDAO.queryForId(idService);
+            serviceName = service.getServiceName();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e("Insert Error", e.toString());
         }finally {
             dbh.close();
         }
